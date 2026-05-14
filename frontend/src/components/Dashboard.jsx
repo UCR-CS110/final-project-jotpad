@@ -1,11 +1,13 @@
 import React from 'react';
+import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
+import Profile from "./Profile.jsx";
 
 function Dashboard() {
   return (
     <div style={{ padding: '20px' }}>
       <h2>My Dashboard</h2>
       <h3 style={{ color: 'green' }}>My Credits: 5 🪙</h3>
-      
+      <Link to="/profile">My Profile</Link>
       <h3>Recommended Stories for Review</h3>
       <ul>
         <li>
