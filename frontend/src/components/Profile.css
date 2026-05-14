@@ -1,0 +1,93 @@
+.profile {
+    margin-top: 20px;
+}
+
+#profile-banner {
+    height: 300px;
+    width: 1000px;
+    margin-bottom: -6px;
+}
+
+#profile-pic {
+    border-radius: 50%;
+    width: 200px;
+    height: 200px;
+    z-index: 100;
+    position: absolute;
+    top: 270px;
+    left: 800px;
+    
+}
+
+.profile-top {
+    background-color: rgb(234, 235, 220);
+    width: 1000px;
+    justify-self: center;
+    height: 200px;
+}
+
+#profile-username {
+    color: black;
+    font-size: 30px;
+    padding-top: 30px;
+}
+
+#profile-description {
+    padding-top: 20px;
+}
+
+#profile-works-created {
+    color: rgb(21, 30, 33);
+}
+
+#profile-my-stories {
+    margin-top: 20px;
+    margin-bottom: 20px;
+    font-family:'Gill Sans', 'Gill Sans MT', 'Trebuchet MS', sans-serif;
+    font-size: 30px;
+    background-color: rgb(62, 67, 20);
+    width: 500px;
+    align-self: center;
+}
+
+.profile-story {
+    background-color: rgb(206, 209, 190);
+    width: 900px;
+    height: 150px;
+    border-radius: 15px;
+    justify-self: center;
+    display: flex;
+    gap: 50px;
+}
+
+.profile-story-cover {
+    width: 100px;
+    height: 100px;
+    margin-left: 40px;
+    margin-top: 23px;
+    border-radius: 10px;
+}
+
+.profile-story-info {
+    margin-top: 25px;
+    display: flex;
+    flex-direction: column;
+}
+
+.profile-story-title {
+    color: black;
+    text-align: left;    
+}
+
+.profile-story-description {
+    color: black;
+    text-align: left;
+}
+
+.profile-stories {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    justify-self: center;
+}
+
