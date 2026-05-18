@@ -4,6 +4,8 @@ import Login from './components/Login';
 import Dashboard from './components/Dashboard';
 import StoryReader from './components/StoryReader';
 import Profile from './components/Profile';
+import RequestListing from './components/RequestListing';
+import Inbox from './components/Inbox';
 
 function App() {
   return (
@@ -11,6 +13,7 @@ function App() {
       <nav style={{ background: '#333', padding: '15px' }}>
         <Link to="/" style={{ color: 'white', marginRight: '20px', textDecoration: 'none' }}>Login</Link>
         <Link to="/dashboard" style={{ color: 'white', marginRight: '20px', textDecoration: 'none' }}>Dashboard</Link>
+        <Link to="/betarequests" style={{ color: 'white', textDecoration: 'none', marginRight: '20px' }}>Find Beta Requests</Link>
         <Link to="/story" style={{ color: 'white', textDecoration: 'none' }}>Read Story</Link>
       </nav>
 
@@ -19,6 +22,8 @@ function App() {
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/story" element={<StoryReader />} />
         <Route path="/profile" element={<Profile />} />
+        <Route path="/betarequests" element={<RequestListing />} />
+        <Route path="/inbox" element={<Inbox />} />
       </Routes>
     </Router>
   );
