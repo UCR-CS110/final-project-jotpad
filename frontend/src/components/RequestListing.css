@@ -1,0 +1,10 @@
+.beta-requests-table {
+    background-color: gray;
+    justify-self: center;
+}
+
+.beta-request {
+    background-color: rgb(219, 201, 151);
+    width: 900px;
+    height: 150px;
+}

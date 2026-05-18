@@ -1,6 +1,8 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import Profile from "./Profile.jsx";
+import InboxIcon from '../assets/inbox.png'
+import './Dashboard.css'
 
 function Dashboard() {
   return (
@@ -8,6 +10,8 @@ function Dashboard() {
       <h2>My Dashboard</h2>
       <h3 style={{ color: 'green' }}>My Credits: 5 🪙</h3>
       <Link to="/profile">My Profile</Link>
+      <br />
+      <Link to="/inbox"><img src={InboxIcon} class="inbox-icon"></img></Link>
       <h3>Recommended Stories for Review</h3>
       <ul>
         <li>

@@ -1,0 +1,7 @@
+.inbox {
+    justify-self: center;
+}
+
+.inbox-message {
+    background-color: rgb(190, 190, 129);
+}
