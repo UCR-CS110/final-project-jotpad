@@ -6,6 +6,7 @@ import StoryReader from './components/StoryReader';
 import Profile from './components/Profile';
 import RequestListing from './components/RequestListing';
 import Inbox from './components/Inbox';
+import RequestDetails from './components/RequestDetails';
 
 function App() {
   return (
@@ -22,8 +23,9 @@ function App() {
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/story" element={<StoryReader />} />
         <Route path="/profile" element={<Profile />} />
-        <Route path="/betarequests" element={<RequestListing />} />
+        <Route path="/betarequests/*" element={<RequestListing />} />
         <Route path="/inbox" element={<Inbox />} />
+        <Route path="/requests/:id" element={<RequestDetails />} />
       </Routes>
     </Router>
   );

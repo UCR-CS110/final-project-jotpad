@@ -11,7 +11,7 @@ function Dashboard() {
       <h3 style={{ color: 'green' }}>My Credits: 5 🪙</h3>
       <Link to="/profile">My Profile</Link>
       <br />
-      <Link to="/inbox"><img src={InboxIcon} class="inbox-icon"></img></Link>
+      <Link to="/inbox"><img src={InboxIcon} className="inbox-icon"></img></Link>
       <h3>Recommended Stories for Review</h3>
       <ul>
         <li>
