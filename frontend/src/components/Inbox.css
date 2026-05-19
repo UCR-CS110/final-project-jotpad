@@ -4,4 +4,15 @@
 
 .inbox-message {
     background-color: rgb(190, 190, 129);
+    width: 1200px;
+    max-height: 200px;
+}
+
+.full-message {
+    background-color: rgb(86, 93, 97);
+    height: 800px;
+}
+
+.inbox-all {
+    display: flex;
 }

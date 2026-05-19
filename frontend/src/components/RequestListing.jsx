@@ -1,10 +1,12 @@
+import { Link } from 'react-router-dom';
 import "./RequestListing.css"
 
-function BetaRequest({title, genre, tags, words, feedbackTypes }) {
+function BetaRequest({title, id, genre, tags, words, feedbackTypes }) {
     return (
         <div class="beta-request">
             <h2>{title}</h2>
             <p>{genre}</p>
+            <p>{id}</p>
             <p>{tags.map(tag => (<>{tag}, </>))}</p>
             <p>{words} words</p>
 
@@ -13,6 +15,7 @@ function BetaRequest({title, genre, tags, words, feedbackTypes }) {
 }
 
 export default function RequestListing({}) {
+    
 
     return (
         <div>
@@ -22,11 +25,12 @@ export default function RequestListing({}) {
             <hr />
 
             <div class="beta-requests-table">
-                <BetaRequest title="WIP" genre="Science Fiction" tags={["Short story", "Aliens"]} words="3002" />
-
+                
+                <Link to={"/requests/"+"001"}><BetaRequest title="WIP" id="001" genre="Science Fiction" tags={["Short story", "Aliens"]} words="3002" /></Link>
+                
                 <br />
 
-                <BetaRequest title="wip2" genre="Fantasy" tags={["Serialized", "Fanfiction"]} words="60544" />
+                <Link to={"/requests/"+"002"}><BetaRequest title="wip2" id="002" genre="Fantasy" tags={["Serialized", "Fanfiction"]} words="60544" /></Link>
             </div>
             
 
