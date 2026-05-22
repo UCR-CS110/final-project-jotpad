@@ -2,3 +2,13 @@
     background-color: gray;
     height: 800px;
 }
+
+#request-to-beta {
+    margin-top: 20px;
+    font-size: 20px;
+}
+
+#beta-request-message {
+    margin-top: 800px;
+    color: rgb(132, 192, 132);
+}

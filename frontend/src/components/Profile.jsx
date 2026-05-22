@@ -1,5 +1,6 @@
 import banner from '../assets/banner.jpg';
 import pfp from '../assets/pfp.webp';
+import { useNavigate } from 'react-router-dom';
 import './Profile.css'
 
 function ProfileStory({ image, title, description }) {
@@ -15,9 +16,11 @@ function ProfileStory({ image, title, description }) {
 }
 
 export default function Profile() {
+    const navigate = useNavigate();
 
     return (
         <div class="profile">
+            <button id="profile-back" onClick={() => navigate('/dashboard')}>Back</button>
             <img src={banner} alt="Banner" id="profile-banner" />
             <img src={pfp} alt="Profile Pic" id="profile-pic"/>
             <div class="profile-top">

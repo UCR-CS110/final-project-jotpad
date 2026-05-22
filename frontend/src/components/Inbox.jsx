@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import "./Inbox.css"
 
 function Message({subject, from, date, blurb, setVisible }) {
@@ -41,6 +41,8 @@ export default function Inbox({}) {
     const [currentMessage, setCurrentMessage] = useState(null);
     const [fullVisible, setFullVisible] = useState(false);
 
+    const navigate = useNavigate();
+
     let fullMessage;
     if (fullVisible) {
         fullMessage = <FullMessage subject="Offer for beta reading accepted" from="SwedishFish" date="01/24/2026" message="Your offer to beta-read The Martian City has been accepted! Click here to read the story:" />
@@ -50,6 +52,8 @@ export default function Inbox({}) {
 
         <div class="inbox">
         <h1>Inbox</h1>
+
+        <button id="inbox-back" onClick={() => navigate('/dashboard')}>Back</button>
 
         <div class="inbox-all">
         <Message subject="Offer for beta reading accepted" from="SwedishFish" date="01/24/2026" blurb="Your offer to beta-read The Martian City has been accepted!..." setVisible={setFullVisible} />

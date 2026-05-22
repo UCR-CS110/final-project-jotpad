@@ -2,6 +2,13 @@
     margin-top: 20px;
 }
 
+#profile-back {
+    position: absolute;
+    top: 100px;
+    left: 578px;
+    font-size: 20px;
+}
+
 #profile-banner {
     height: 300px;
     width: 1000px;
