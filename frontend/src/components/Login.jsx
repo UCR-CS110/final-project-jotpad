@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 function Login() {
   // Store the user input
@@ -8,11 +9,14 @@ function Login() {
   // true = Login view, false = Sign Up view
   const [isLoginView, setIsLoginView] = useState(true);
 
+  const navigate = useNavigate();
+
   const handleSubmit = (e) => {
     e.preventDefault(); // Prevents the page from reloading
     if (isLoginView) {
       alert(`Logging in with: ${email}!`);
       // Future logic for Login API call
+      navigate('/dashboard');
     } else {
       alert(`Creating a new account with: ${email}!`);
       // Future logic for Sign Up API call
