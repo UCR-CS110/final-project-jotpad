@@ -26,4 +26,4 @@ npm run dev
 Our project is a microblogging website called Jotpad. It is a platform that allows aspiring writers to post stories online for others to view. Its unique feature is a currency system that requires you to provide constructive feedback for others' works before you can post your own stories, so users who use this app will use it in order to improve their writing skills.
 
 ## Sections That Are Working for the Status Report
-In the backend, only the story posting and viewing is fully functional. The application accesses the server to retrive all posted stories that are flagged as public, and lists them in the read story tab. The majority of the frontend has been completed, and only needs to link with the backend once that has been finished.
+In the backend, only the story posting and viewing is fully functional. The application accesses the server to retrieve all posted stories that are flagged as public, and lists them in the read story tab. The majority of the frontend has been completed, and only needs to link with the backend once that has been finished.
