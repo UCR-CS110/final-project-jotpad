@@ -7,13 +7,18 @@ import Profile from './components/Profile';
 import RequestListing from './components/RequestListing';
 import Inbox from './components/Inbox';
 import RequestDetails from './components/RequestDetails';
+import StoryEditor from './components/StoryEditor';
+import './App.css';
 
 function App() {
+  const API_URL = "http://localhost:5000/api/books";
+
   return (
     <Router>
       <nav style={{ background: '#333', padding: '15px' }}>
         <Link to="/" style={{ color: 'white', marginRight: '20px', textDecoration: 'none' }}>Login</Link>
         <Link to="/dashboard" style={{ color: 'white', marginRight: '20px', textDecoration: 'none' }}>Dashboard</Link>
+        <Link to="/storyeditor" style={{ color: 'white', marginRight: '20px', textDecoration: 'none' }}>Write Story</Link>
         <Link to="/betarequests" style={{ color: 'white', textDecoration: 'none', marginRight: '20px' }}>Find Beta Requests</Link>
         <Link to="/story" style={{ color: 'white', textDecoration: 'none' }}>Read Story</Link>
       </nav>
@@ -21,6 +26,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Login />} />
         <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/storyeditor" element={<StoryEditor />} />
         <Route path="/story" element={<StoryReader />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/betarequests/*" element={<RequestListing />} />

@@ -1,0 +1,101 @@
+.story-editor {
+    max-width: 9000px;
+    min-width: 500px;
+    margin: auto;
+    padding: 18px;
+    background:transparent;
+    border-radius: 8px;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.06);
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+}
+
+
+
+.se-title {
+    margin: 0 0 12px 0;
+    font-size: 1.5rem;
+    color: white;
+}
+
+.se-form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.se-label {
+    font-weight: 600;
+    font-size: 0.95rem;
+    color: white;
+}
+
+.se-input,
+.se-textarea,
+.se-select {
+    width: 100%;
+    padding: 8px 10px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 1rem;
+    color: black;
+    box-sizing: border-box;
+    background: #fafafa;
+}
+
+.se-textarea {
+    resize: vertical;
+    min-height: 160px;
+}
+
+.se-meta {
+    font-size: 0.85rem;
+    color: #666;
+    text-align: right;
+    margin-top: -6px;
+    margin-bottom: 6px;
+}
+
+.se-row {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+}
+
+.se-checkbox {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.95rem;
+    cursor: pointer;
+    color:white;
+}
+
+.se-select-label {
+    margin-left: 100px;
+    color: black;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.95rem;
+}
+
+.se-error {
+    color: #b00020;
+    font-size: 0.95rem;
+}
+
+.se-button {
+    margin-top: 6px;
+    padding: 10px 14px;
+    background: #2b7cff;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+.se-button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}

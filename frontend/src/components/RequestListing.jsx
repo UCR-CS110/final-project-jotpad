@@ -14,8 +14,7 @@ function BetaRequest({title, id, genre, tags, words, feedbackTypes }) {
     );
 }
 
-export default function RequestListing({}) {
-    
+export default function RequestListing({}) {   
 
     return (
         <div>
