@@ -8,7 +8,6 @@ import RequestListing from './components/RequestListing';
 import Inbox from './components/Inbox';
 import RequestDetails from './components/RequestDetails';
 import StoryEditor from './components/StoryEditor';
-import './App.css';
 
 function App() {
   const API_URL = "http://localhost:5000/api/books";
