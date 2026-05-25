@@ -1,14 +1,15 @@
 import banner from '../assets/banner.jpg';
 import pfp from '../assets/pfp.webp';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import './Profile.css'
 
-function ProfileStory({ image, title, description }) {
+function ProfileStory({ image, title, author, description }) {
     return (
         <div class="profile-story">
             <img src={image} alt="story-cover1" class="profile-story-cover" />
             <div class="profile-story-info">
                 <h2 class="profile-story-title">{title}</h2>
+                <p class="profile-story-author">By <Link to={"/profile"}>{author}</Link></p>
                 <p class="profile-story-description">{description}</p>
             </div>
         </div>
@@ -31,25 +32,28 @@ export default function Profile() {
 
 
             <hr></hr>
-
+            <h2 id="profile-my-stories">My stories</h2>
             <div class="profile-stories">
-                <h2 id="profile-my-stories">My stories</h2>
+                
 
                 <ProfileStory
                     image={"https://static.vecteezy.com/system/resources/thumbnails/002/219/582/small/illustration-of-book-icon-free-vector.jpg"}
                     title="Title 1"
+                    author="me"
                     description="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
                 />
 
                 <ProfileStory
                     image={"https://static.vecteezy.com/system/resources/thumbnails/002/219/582/small/illustration-of-book-icon-free-vector.jpg"}
                     title="Title 2"
+                    author="me"
                     description="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
                 />
 
                 <ProfileStory
                     image={"https://static.vecteezy.com/system/resources/thumbnails/002/219/582/small/illustration-of-book-icon-free-vector.jpg"}
                     title="Title 3"
+                    author="me"
                     description="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
                 />
                 

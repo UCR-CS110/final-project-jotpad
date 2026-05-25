@@ -4,8 +4,8 @@
 
 #inbox-back {
     position: absolute;
-    top: 85px;
-    left: 400px;
+    top: 100px;
+    left: 18%;
     font-size: 20px;
 }
 
@@ -18,8 +18,22 @@
 .full-message {
     background-color: rgb(86, 93, 97);
     height: 800px;
+    position: absolute;
+    justify-self: center;
+    margin-right: 20%;
 }
 
 .inbox-all {
     display: flex;
+}
+
+.subject-line-full {
+    display: flex;
+}
+
+.full-message-x {
+    margin-left: 50%;
+    background-color: red;
+    max-width: 20px;
+    max-height: 20px;
 }

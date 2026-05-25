@@ -10,7 +10,7 @@ function Message({subject, from, date, blurb, setVisible }) {
         }
     }
     return (
-        <div className="inbox-message" onClick={() => {setVisible(1); changeWidth()}}>
+        <div className="inbox-message" onClick={() => {setVisible(1);}}>
             <h2>{subject}</h2>
             <p>{from}</p>
             <p>{date}</p>
@@ -20,10 +20,13 @@ function Message({subject, from, date, blurb, setVisible }) {
     );
 }
 
-function FullMessage({subject, from, date, message}) {
+function FullMessage({subject, from, date, message, setVisible}) {
     return (
         <div class="full-message">
-            <h2>{subject}</h2>
+            <div class="subject-line-full">
+                <h2>{subject}</h2>
+                <button class="full-message-x" onClick={() => {setVisible(0)}}>X</button>
+            </div>
             <p>{from}</p>
             <p>{date}</p>
             <br />
@@ -45,7 +48,7 @@ export default function Inbox({}) {
 
     let fullMessage;
     if (fullVisible) {
-        fullMessage = <FullMessage subject="Offer for beta reading accepted" from="SwedishFish" date="01/24/2026" message="Your offer to beta-read The Martian City has been accepted! Click here to read the story:" />
+        fullMessage = <FullMessage subject="Offer for beta reading accepted" from="SwedishFish" date="01/24/2026" message="Your offer to beta-read The Martian City has been accepted! Click here to read the story:" setVisible={setFullVisible}/>
     }
 
     return (

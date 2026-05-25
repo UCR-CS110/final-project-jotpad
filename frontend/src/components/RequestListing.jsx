@@ -1,16 +1,17 @@
 import { Link } from 'react-router-dom';
 import "./RequestListing.css"
 
-function BetaRequest({title, id, genre, tags, words, feedbackTypes }) {
+function BetaRequest({title, id, genre, tags, words, feedbackTypes, link }) {
     return (
-        <div class="beta-request">
-            <h2>{title}</h2>
-            <p>{genre}</p>
-            <p>{id}</p>
-            <p>{tags.map(tag => (<>{tag}, </>))}</p>
-            <p>{words} words</p>
+        <tr class="beta-request">
+            <td class="request-title">{title}</td>
+            <td class="request-genre">{genre}</td>
+            <td class="request-id">{id}</td>
+            <td class="request-tags">{tags.map(tag => (<>{tag}, </>))}</td>
+            <td class="request-words">{words} words</td>
+            <td class="request-link"><Link to={link}>See page</Link></td>
 
-        </div>
+        </tr>
     );
 }
 
@@ -18,20 +19,29 @@ export default function RequestListing({}) {
 
     return (
         <div>
-            <input type="text" id="beta-request-search" placeholder="Search requests by name" />
-            <button>Search</button>
+            <div class="requests-search">
+                <input type="text" placeholder="Search requests by name" id="requests-search-input" />
+                <button id="requests-search-button">Search</button>
+            </div>
+            
 
             <hr />
 
-            <div class="beta-requests-table">
-                
-                <Link to={"/requests/"+"001"}><BetaRequest title="WIP" id="001" genre="Science Fiction" tags={["Short story", "Aliens"]} words="3002" /></Link>
+            <table class="beta-requests-table">
+                <tr>
+                    <th>Title</th>
+                    <th>Genre</th>
+                    <th>ID</th>
+                    <th>Tags</th>
+                    <th>Words</th>
+                    <th>View</th>
+                </tr>
+                <BetaRequest title="WIP" id="001" genre="Science Fiction" tags={["Short story", "Aliens"]} words="3002" link={"/requests/"+"001"}/>
                 
                 <br />
 
-                <Link to={"/requests/"+"002"}><BetaRequest title="wip2" id="002" genre="Fantasy" tags={["Serialized", "Fanfiction"]} words="60544" /></Link>
-            </div>
-            
+                <BetaRequest title="wip2" id="002" genre="Fantasy" tags={["Serialized", "Fanfiction"]} words="60544" link={"/requests/"+"002"} />
+            </table>
 
         </div>
     );
