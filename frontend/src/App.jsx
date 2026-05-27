@@ -10,6 +10,8 @@ import RequestDetails from './components/RequestDetails';
 import StoryEditor from './components/StoryEditor';
 import Drafts from './components/Drafts';
 import "./App.css"
+import StoryView from './components/StoryView';
+import './App.css';
 
 function App() {
   const API_URL = "http://localhost:5000/api/books";
@@ -35,6 +37,7 @@ function App() {
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/storyeditor" element={<StoryEditor />} />
         <Route path="/story" element={<StoryReader />} />
+        <Route path="/story/:id" element={<StoryView />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/betarequests/*" element={<RequestListing />} />
         <Route path="/inbox" element={<Inbox />} />
