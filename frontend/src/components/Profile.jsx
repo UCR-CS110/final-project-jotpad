@@ -1,5 +1,6 @@
 import banner from '../assets/banner.jpg';
 import pfp from '../assets/pfp.webp';
+import { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import './Profile.css'
 
@@ -17,7 +18,41 @@ function ProfileStory({ image, title, author, description }) {
 }
 
 export default function Profile() {
+    const [profile, setProfile] = useState(null);
+    const [error, setError] = useState(null);
+    const [loading, setLoading] = useState(true);
+
     const navigate = useNavigate();
+
+     useEffect(() => {
+        async function fetchProfile() {
+          try {
+            const res = await fetch("/api/users/me");
+    
+            if (!res.ok) {
+              throw new Error("Failed to fetch profile");
+            }
+    
+            const data = await res.json();
+            setProfile(data);
+          } catch (err) {
+            setError(err.message);
+          } finally {
+            setLoading(false);
+          }
+        }
+    
+        fetchProfile();
+    }, []);
+
+    
+  if (loading) {
+    return <div style={{ padding: "20px" }}>Loading profile...</div>;
+  }
+
+  /*if (error) {
+    return <div style={{ padding: "20px", color: "red" }}>{error}</div>;
+  }*/
 
     return (
         <div class="profile">

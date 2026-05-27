@@ -12,6 +12,14 @@
     font-size: 15px;
 }
 
+.add-request {
+    justify-self: center;
+}
+
+#add-request-button {
+    font-size: 17px;
+}
+
 .beta-requests-table {
     margin-top: 40px;
     background-color: rgb(148, 148, 148);

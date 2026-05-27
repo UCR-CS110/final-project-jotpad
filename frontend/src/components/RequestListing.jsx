@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import "./RequestListing.css"
 
@@ -15,13 +16,25 @@ function BetaRequest({title, id, genre, tags, words, feedbackTypes, link }) {
     );
 }
 
-export default function RequestListing({}) {   
+export default function RequestListing({}) {
+    const [add, setAdd] = useState(false);
+
+    let add_button; 
+    if (add == true) {
+        add_button = <button id="add-request-button">Add request</button>
+    } else {
+        add_button = <button id="add-request-button" disabled>Add request</button>
+    }
 
     return (
         <div>
             <div class="requests-search">
                 <input type="text" placeholder="Search requests by name" id="requests-search-input" />
                 <button id="requests-search-button">Search</button>
+            </div>
+
+            <div class="add-request">
+                {add_button}
             </div>
             
 

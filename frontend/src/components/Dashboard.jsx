@@ -18,6 +18,7 @@ function Dashboard() {
         <div class="dashboard-dropdown-content">
           <p><Link to="/profile">My Profile</Link></p>
           <p><Link to="/inbox">Inbox <img src={InboxIcon} className="inbox-icon"></img></Link></p>
+          <p><Link to="/drafts">Drafts</Link></p>
         </div>
       </div>
       </div>

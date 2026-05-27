@@ -11,6 +11,20 @@ export default function RequestDetails({}) {
     if (messageVisible) {
         requestMessage = <p id="beta-request-message">Thank you for offering to beta read! You will receive a message in your inbox about next steps if the author accepts your request.</p>
     }
+    /*async function sendRequestMessage() {
+        try {
+            const res = await fetch("/api/messages/"),
+            {
+                method: 'POST',
+
+                body: JSON.stringify({
+                    body: "Offer"
+                })
+            }
+        } catch (error) {
+
+        }
+    };*/
     return (
         <div>
         <button onClick={() => navigate('/betarequests')}>Back</button>
