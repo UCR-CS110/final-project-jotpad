@@ -4,15 +4,17 @@
 
 #profile-back {
     position: absolute;
-    top: 100px;
-    left: 578px;
+    top: 90px;
+    left: 220px;
     font-size: 20px;
 }
 
 #profile-banner {
-    height: 300px;
-    width: 1000px;
+    height: 500px;
+    width: 70%;
     margin-bottom: -6px;
+    align-self: center;
+    margin-left: 15%;
 }
 
 #profile-pic {
@@ -22,8 +24,8 @@
     z-index: 100;
     position: absolute;
     top: 270px;
-    left: 800px;
-    
+    justify-self: center;
+    margin-right: 92%;
 }
 
 .profile-top {
@@ -31,6 +33,10 @@
     width: 1000px;
     justify-self: center;
     height: 200px;
+    position: absolute;
+    top: 380px;
+    margin-left: 100%;
+    justify-items: center;
 }
 
 #profile-username {
@@ -52,16 +58,22 @@
     margin-bottom: 20px;
     font-family:'Gill Sans', 'Gill Sans MT', 'Trebuchet MS', sans-serif;
     font-size: 30px;
-    background-color: rgb(62, 67, 20);
+    background-color: rgb(169, 174, 121);
     width: 500px;
+    border-radius: 10%;
     align-self: center;
+    text-align: center;
+    padding-top: 30px;
+    padding-bottom: 30px;
+    justify-self: center;
 }
 
 .profile-story {
-    background-color: rgb(206, 209, 190);
-    width: 900px;
+    background-color: rgb(205, 212, 189);
+    width: 120%;
+    margin-right: 10%;
     height: 150px;
-    border-radius: 15px;
+    border-radius: 10px;
     justify-self: center;
     display: flex;
     gap: 50px;
@@ -83,12 +95,18 @@
 
 .profile-story-title {
     color: black;
-    text-align: left;    
+    text-align: left;
+    margin-top: 0%;
+}
+
+.profile-story-author {
+    margin-top: -2%;
 }
 
 .profile-story-description {
     color: black;
     text-align: left;
+    margin-top: -1%;
 }
 
 .profile-stories {
@@ -96,5 +114,6 @@
     flex-direction: column;
     gap: 20px;
     justify-self: center;
+    padding-right: 5%;
 }
 

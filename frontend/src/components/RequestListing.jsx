@@ -2,24 +2,34 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import "./RequestListing.css"
 
-function BetaRequest({title, id, genre, tags, words, feedbackTypes }) {
+function BetaRequest({title, id, genre, tags, words, feedbackTypes, link }) {
     return (
-        <div className="beta-request">
-            <h2>{title}</h2>
-            <p>{genre}</p>
-            <p>{id}</p>
-            <p>{tags.map(tag => (<>{tag}, </>))}</p>
-            <p>{words} words</p>
+        <tr class="beta-request">
+            <td class="request-title">{title}</td>
+            <td class="request-genre">{genre}</td>
+            <td class="request-id">{id}</td>
+            <td class="request-tags">{tags.map(tag => (<>{tag}, </>))}</td>
+            <td class="request-words">{words} words</td>
+            <td class="request-link"><Link to={link} key={id} style={{ textDecoration: 'none', color: 'inherit' }}>See page</Link></td>
 
-        </div>
+        </tr>
     );
 }
 
 export default function RequestListing({}) {
+    const [add, setAdd] = useState(false);
     const [requests, setRequests] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [searchTerm, setSearchTerm] = useState("");
+
+    let add_button;
+    if (add == true) {
+        add_button = <button id="add-request-button">Add request</button>
+    } else {
+        add_button = <button id="add-request-button" disabled>Add request</button>
+    }
+    
 
     useEffect(() => {
         const fetchRequests = async () => {
@@ -46,6 +56,11 @@ export default function RequestListing({}) {
     
     return (
         <div>
+            <div class="requests-search">
+                <input type="text" placeholder="Search requests by name" id="requests-search-input" />
+                <button id="requests-search-button">Search</button>
+            </div>
+
             <input 
                 type="text" 
                 id="beta-request-search" 
@@ -55,25 +70,44 @@ export default function RequestListing({}) {
             />
             <button>Search</button>
 
+            <div class="add-request">
+                {add_button}
+            </div>
+            
+
             <hr />
 
-            {loading && <p style={{ textAlign: 'center' }}>Searching stories...</p>}
-            {error && <p style={{ textAlign: 'center', color: 'red' }}>Error: {error}</p>}
-
-            <div class="beta-requests-table">
+            <table class="beta-requests-table">
+                <tr>
+                    <th>Title</th>
+                    <th>Genre</th>
+                    <th>ID</th>
+                    <th>Tags</th>
+                    <th>Words</th>
+                    <th>View</th>
+                </tr>
+                <BetaRequest title="WIP" id="001" genre="Science Fiction" tags={["Short story", "Aliens"]} words="3002" link={"/requests/"+"001"}/>
                 
+                <br />
+
+                <BetaRequest title="wip2" id="002" genre="Fantasy" tags={["Serialized", "Fanfiction"]} words="60544" link={"/requests/"+"002"} />
                 {!loading && !error && requests.map((request) => (
-                    <Link to={"/requests/" + request._id} key={request._id} style={{ textDecoration: 'none', color: 'inherit' }}>
-                        <BetaRequest 
+                    <BetaRequest 
                             title={request.title || "Sin título"} 
                             id={request._id} 
                             genre={request.genre || "General"} 
                             tags={request.tags || []} 
                             words={request.wordCount || 0} 
-                        />
-                    </Link>
+                            link={"/requests/"+request._id}
+                    />
                 ))}
-            </div>
+            </table>
+
+            {loading && <p style={{ textAlign: 'center' }}>Searching stories...</p>}
+            {error && <p style={{ textAlign: 'center', color: 'red' }}>Error: {error}</p>}
+
+                
+                
             
 
         </div>

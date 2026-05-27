@@ -1,6 +1,74 @@
+.dashboard-start {
+    display: flex;
+    gap: 85%;
+}
+
+.dashboard-pfp {
+    border-radius: 50%;
+    width: 100px;
+    height: 100px;
+}
+
 .inbox-icon {
-    max-width: 50px;
-    max-height: 50px;
-    background-color: white;
+    max-width: 30px;
+    max-height: 30px;
     margin-top: 20px;
+}
+
+#dashboard-recommendations {
+    justify-self: center;
+    justify-items: center;
+}
+
+.dashboard-recommendation-stories {
+    font-family:'Gill Sans', 'Gill Sans MT', 'Trebuchet MS', sans-serif;
+    font-size: 20px;
+    justify-content: center;
+    display: flex;
+    gap: 200px;
+}
+
+.dashboard-recommendation-story {
+    display: flex;
+    justify-content: center;
+    background-color: rgb(213, 216, 198);
+    width: 900px;
+    border-radius: 10px;
+    justify-self: center;
+    align-content: center;
+    padding-top: 50px;
+    padding-bottom: 50px;
+    display: flex;
+    gap: 50px;
+}
+
+.recommendation-story-button {
+    max-height: 50px;
+}
+
+.dashboard-dropdown-content {
+    display: none;
+    background-color: rgb(207, 205, 175);
+    width: 150px;
+    z-index: 1;
+    position: absolute;
+}
+
+.dashboard-dropdown:hover .dashboard-dropdown-content {
+    display: block;
+}
+
+.dashboard-dropdown-content p {
+    display: block;
+}
+
+.dashboard-dropdown-content p:hover {
+    background-color: rgb(179, 134, 134);
+}
+
+.dashboard-dropdown:hover .dashboard-dropdown-button {
+    width: 103px;
+    height: 103px;
+    margin-bottom: 5px;
+    margin-right: 5px;
 }

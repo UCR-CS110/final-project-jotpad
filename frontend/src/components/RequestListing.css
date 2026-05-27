@@ -1,10 +1,57 @@
-.beta-requests-table {
-    background-color: gray;
+.requests-search {
     justify-self: center;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+#requests-search-input {
+    font-size: 15px;
+}
+
+#requests-search-button {
+    font-size: 15px;
+}
+
+.add-request {
+    justify-self: center;
+}
+
+#add-request-button {
+    font-size: 17px;
+}
+
+.beta-requests-table {
+    margin-top: 40px;
+    background-color: rgb(148, 148, 148);
+    justify-self: center;
+    font-size: 20px;
 }
 
 .beta-request {
     background-color: rgb(219, 201, 151);
-    width: 900px;
-    height: 150px;
+    height: 100px;
+}
+
+.request-title {
+    width: 35%;
+}
+
+.request-genre {
+    width: 15%;
+}
+
+.request-id {
+    width: 10%;
+}
+
+.request-tags {
+    width: 20%;
+}
+
+.request-words {
+    width: 15%;
+}
+
+.request-link {
+    width: 15%;
 }

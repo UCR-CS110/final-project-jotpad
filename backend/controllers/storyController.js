@@ -125,6 +125,14 @@ async function listPublicStories(req, res) {
     }
 }
 
+async function getDrafts(req, res) {
+    try {
+        
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+}
+
 async function listByAuthor(req, res) {
     try {
         const stories = await Story.find({ author: req.params.id }).sort({ createdAt: -1 });
@@ -140,5 +148,6 @@ module.exports = {
     updateStory,
     deleteStory,
     listPublicStories,
+    getDrafts,
     listByAuthor,
 };

@@ -14,7 +14,7 @@
 .se-title {
     margin: 0 0 12px 0;
     font-size: 1.5rem;
-    color: white;
+    color: black;
 }
 
 .se-form {
@@ -26,7 +26,7 @@
 .se-label {
     font-weight: 600;
     font-size: 0.95rem;
-    color: white;
+    color: black;
 }
 
 .se-input,
@@ -67,7 +67,7 @@
     gap: 8px;
     font-size: 0.95rem;
     cursor: pointer;
-    color:white;
+    color: black;
 }
 
 .se-select-label {
