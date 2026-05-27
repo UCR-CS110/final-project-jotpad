@@ -11,21 +11,55 @@ function Login() {
 
   const navigate = useNavigate();
 
-  async function handleSubmit(e) {
+  const handleSubmit = async(e) => {
     e.preventDefault();
-    setError(null);
-    try {
-      const res = await fetch("/api/auth/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password }),
-      });
-      const body = await res.json();
-      if (!res.ok) throw new Error(body.message || "Login failed");
-      localStorage.setItem("token", body.token);
-      nav("/dashboard");
-    } catch (err) {
-      setError(err.message);
+
+    //Login view
+    if (isLoginView) {
+      try{
+        const response = await fetch('http://localhost:5000/api/login', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ email, password }), 
+          });
+          
+        const data = await response.json();
+
+        if (response.ok) {
+          alert('Login successful!');
+          navigate('/dashboard');
+        } else {
+          alert(`Login failed: ${data.message}`);
+        }
+      } catch (error) {
+        console.error('Error during login:', error);
+        alert('An error occurred during login. Please try again later.');
+      }
+    } else {
+      // Sign Up view
+      try {
+        const response = await fetch('http://localhost:5000/api/register', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email, password }), 
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {
+          alert('Registration successful! Please log in.');
+          setIsLoginView(true);
+          setEmail('');
+          setPassword('');
+        } else {
+          alert(`Registration failed: ${data.message}`);
+        }
+      } catch (error) {
+        console.error('Error during registration:', error);
+        alert('An error occurred during registration. Please try again later.');
+      }
     }
   };
 
