@@ -1,5 +1,6 @@
 const Story = require("../models/Story.js");
 const User = require("../models/User.js");
+const BetaRequest = require("../models/BetaRequest.js");
 
 function getUserIdFromReq(req) {
     return req.user?.id || req.user?._id || req.userId;
@@ -44,7 +45,7 @@ async function createStory(req, res) {
         console.log("Anonymous story submission");
 
         const story = await Story.create({
-            author: null, // no user system
+            author: req.body.author,
             title: req.body.title,
             content: req.body.content,
             tags: req.body.tags || [],
@@ -79,10 +80,10 @@ async function getStory(req, res) {
 
 async function updateStory(req, res) {
     try {
-        const me = getUserIdFromReq(req);
+        //const me = getUserIdFromReq(req);
         const story = await Story.findById(req.params.id);
         if (!story) return res.status(404).json({ message: "Story not found" });
-        if (String(story.author) !== String(me)) return res.status(403).json({ message: "Forbidden" });
+        //if (String(story.author) !== String(me)) return res.status(403).json({ message: "Forbidden" });
 
         Object.assign(story, req.body);
         await story.save();
@@ -127,7 +128,42 @@ async function listPublicStories(req, res) {
 
 async function getDrafts(req, res) {
     try {
-        
+        const user = await fetch("http://localhost:5000/api/users/me");
+        const userData = await user.json();
+        const query = { status: "draft", author: userData};
+        const drafts = await Story.find(query);
+        res.json(drafts);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+}
+
+async function postAsRequest(req, res) {
+    try {
+        const duplicate = await BetaRequest.findById(req.params.id);
+        if (duplicate) return res.status(400).json({ message : "Duplicate request" });
+        const request = await BetaRequest.create({
+            title: req.body.title || "(work in progress)",
+            genre: req.body.genre || "(none)",
+            id: req.body.id,
+            tags: req.body.tags || [],
+            words: req.body.words,
+            summary: req.body.summary,
+            author: req.body.author,
+            story: req.body.story
+        });
+
+        res.status(201).json(request);
+
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+}
+
+async function getBetaRequests(req, res) {
+    try {
+        const betaRequests = await BetaRequest.find();
+        res.json(betaRequests);
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
@@ -149,5 +185,7 @@ module.exports = {
     deleteStory,
     listPublicStories,
     getDrafts,
+    postAsRequest,
+    getBetaRequests,
     listByAuthor,
 };
