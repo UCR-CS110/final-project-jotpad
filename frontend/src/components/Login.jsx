@@ -5,6 +5,7 @@ function Login() {
   // Store the user input
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [username, setUsername] = useState('');
 
   // true = Login view, false = Sign Up view
   const [isLoginView, setIsLoginView] = useState(true);
@@ -17,7 +18,7 @@ function Login() {
     //Login view
     if (isLoginView) {
       try{
-        const response = await fetch('http://localhost:5000/api/login', {
+        const response = await fetch('http://localhost:5000/api/login/login', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
@@ -40,10 +41,10 @@ function Login() {
     } else {
       // Sign Up view
       try {
-        const response = await fetch('http://localhost:5000/api/register', {
+        const response = await fetch('http://localhost:5000/api/login/register', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ email, password }), 
+          body: JSON.stringify({ username, email, password }), 
         });
 
         const data = await response.json();
@@ -52,6 +53,7 @@ function Login() {
           alert('Registration successful! Please log in.');
           setIsLoginView(true);
           setEmail('');
+          setUsername('');
           setPassword('');
         } else {
           alert(`Registration failed: ${data.message}`);
@@ -79,6 +81,16 @@ function Login() {
           style={{ display: 'block', margin: '10px 0', padding: '5px' }}
           required
         />
+        {isLoginView ? <></> : 
+        <input
+          type="username"
+          placeholder="Username"
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
+          style={{ display: 'block', margin: '10px 0', padding: '5px' }}
+          required
+        />
+        }
         <input
           type="password"
           placeholder="Password"

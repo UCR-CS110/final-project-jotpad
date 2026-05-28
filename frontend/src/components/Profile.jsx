@@ -6,12 +6,12 @@ import './Profile.css'
 
 function ProfileStory({ image, title, author, description }) {
     return (
-        <div class="profile-story">
-            <img src={image} alt="story-cover1" class="profile-story-cover" />
-            <div class="profile-story-info">
-                <h2 class="profile-story-title">{title}</h2>
-                <p class="profile-story-author">By <Link to={"/profile"}>{author}</Link></p>
-                <p class="profile-story-description">{description}</p>
+        <div className="profile-story">
+            <img src={image} alt="story-cover1" className="profile-story-cover" />
+            <div className="profile-story-info">
+                <h2 className="profile-story-title">{title}</h2>
+                <p className="profile-story-author">By <Link to={"/profile"}>{author}</Link></p>
+                <p className="profile-story-description">{description}</p>
             </div>
         </div>
     );
@@ -55,11 +55,11 @@ export default function Profile() {
   }*/
 
     return (
-        <div class="profile">
+        <div className="profile">
             <button id="profile-back" onClick={() => navigate('/dashboard')}>Back</button>
             <img src={banner} alt="Banner" id="profile-banner" />
             <img src={pfp} alt="Profile Pic" id="profile-pic"/>
-            <div class="profile-top">
+            <div className="profile-top">
                 <h2 id="profile-username">TenaciousAlpaca</h2>
                 <h3 id="profile-description">Moo. (?)</h3>
                 <h3 id="profile-works-created"><strong>Works created:</strong> 3</h3>
@@ -68,7 +68,7 @@ export default function Profile() {
 
             <hr></hr>
             <h2 id="profile-my-stories">My stories</h2>
-            <div class="profile-stories">
+            <div className="profile-stories">
                 
 
                 <ProfileStory

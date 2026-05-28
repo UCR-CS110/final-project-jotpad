@@ -22,10 +22,10 @@ function Message({subject, from, date, blurb, setVisible }) {
 
 function FullMessage({subject, from, date, message, setVisible}) {
     return (
-        <div class="full-message">
-            <div class="subject-line-full">
+        <div className="full-message">
+            <div className="subject-line-full">
                 <h2>{subject}</h2>
-                <button class="full-message-x" onClick={() => {setVisible(0)}}>X</button>
+                <button className="full-message-x" onClick={() => {setVisible(0)}}>X</button>
             </div>
             <p>{from}</p>
             <p>{date}</p>
@@ -53,15 +53,15 @@ export default function Inbox({}) {
 
     return (
 
-        <div class="inbox">
+        <div className="inbox">
         <h1>Inbox</h1>
 
         <button id="inbox-back" onClick={() => navigate('/dashboard')}>Back</button>
 
-        <div class="inbox-all">
+        <div className="inbox-all">
         <Message subject="Offer for beta reading accepted" from="SwedishFish" date="01/24/2026" blurb="Your offer to beta-read The Martian City has been accepted!..." setVisible={setFullVisible} />
 
-        <div class="full-message-display">
+        <div className="full-message-display">
             {fullMessage}
         </div>
 

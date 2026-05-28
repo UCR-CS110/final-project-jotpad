@@ -23,7 +23,11 @@ export default function StoryEditor() {
         setError(null);
         setLoading(true);
 
+        const user = await fetch("http://localhost:5000/api/users/me");
+        const author = await user.json();
+
         const payload = {
+            author,
             title,
             content,
             tags: tagsInput.split(",").map(t => t.trim()).filter(Boolean),
