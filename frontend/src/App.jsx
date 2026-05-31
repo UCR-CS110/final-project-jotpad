@@ -38,7 +38,7 @@ function App() {
         <Route path="/storyeditor" element={<StoryEditor />} />
         <Route path="/story" element={<StoryReader />} />
         <Route path="/story/:id" element={<StoryView />} />
-        <Route path="/profile" element={<Profile />} />
+        <Route path="/profile/:username" element={<Profile />} />
         <Route path="/betarequests/*" element={<RequestListing />} />
         <Route path="/inbox" element={<Inbox />} />
         <Route path="/requests/:id" element={<RequestDetails />} />

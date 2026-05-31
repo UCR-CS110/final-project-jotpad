@@ -20,10 +20,11 @@ function Login() {
       try{
         const response = await fetch('http://localhost:5000/api/login/login', {
             method: 'POST',
+            credentials: 'include',
             headers: {
               'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ email, password }), 
+            body: JSON.stringify({ username: email, password: password }), 
           });
           
         const data = await response.json();
@@ -43,6 +44,7 @@ function Login() {
       try {
         const response = await fetch('http://localhost:5000/api/login/register', {
           method: 'POST',
+          credentials: 'include',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ username, email, password }), 
         });

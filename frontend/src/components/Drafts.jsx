@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import './Drafts.css'
 
-function Draft({draft, reloadval, reload}) {
+function Draft({draft}) {
     const [title, setTitle] = useState(draft.title);
     const [content, setContent] = useState(draft.content);
     const [tagsInput, setTagsInput] = useState((draft.tags).toString());
@@ -10,6 +10,7 @@ function Draft({draft, reloadval, reload}) {
     const [wordCount, setWordCount] = useState(draft.wordCount);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
+    const [remove, setRemove] = useState(false);
 
     useEffect(() => {
         const wc = content.trim() ? content.trim().split(/\s+/).length : 0;
@@ -23,7 +24,9 @@ function Draft({draft, reloadval, reload}) {
         
 
         try {
-            const me = await fetch("http://localhost:5000/api/users/me");
+            const me = await fetch("http://localhost:5000/api/users/me", {
+                credentials: 'include'
+            });
             const author = await me.json();
 
             const payload = {
@@ -38,6 +41,7 @@ function Draft({draft, reloadval, reload}) {
 
             const res = await fetch("http://localhost:5000/api/stories/" + draft._id, {
                 method: "PUT",
+                credentials: 'include',
                 headers: {
                     "Content-Type": "application/json",
                 },
@@ -46,15 +50,17 @@ function Draft({draft, reloadval, reload}) {
 
             const data = await res.json();
             if (data.status == "public") {
-                reload(true);
+                setRemove(true);
             }
 
         } catch (err) {
             setError(err.message);
         } finally {
-            setLoading(!reloadval);
+            setLoading(false);
         }
     }
+
+    if (remove) return (<></>);
 
     return (
         <form className="se-form" onSubmit={editDraft}>
@@ -120,12 +126,13 @@ export default function Drafts({}) {
     const [drafts, setDrafts] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-    const [change, setChange] = useState(false);
 
     useEffect(() => {
         async function fetchDrafts() {
           try {
-            const res = await fetch("http://localhost:5000/api/stories/drafts");
+            const res = await fetch("http://localhost:5000/api/stories/drafts", {
+                credentials: 'include',
+            });
 
             if (!res.ok) {
               throw new Error("Failed to fetch drafts");
@@ -142,7 +149,7 @@ export default function Drafts({}) {
         }
     
         fetchDrafts();
-    }, [change]);
+    }, []);
 
 
     if (loading) {
@@ -163,7 +170,7 @@ export default function Drafts({}) {
             <br />
             {drafts.map((curDraft) => (
                 <>
-                <Draft draft={curDraft} reloadval={change} reload={setChange} />
+                <Draft draft={curDraft} />
                 <br />
                 </>
             ))}

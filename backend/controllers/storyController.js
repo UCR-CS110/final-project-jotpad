@@ -128,8 +128,9 @@ async function listPublicStories(req, res) {
 
 async function getDrafts(req, res) {
     try {
-        const user = await fetch("http://localhost:5000/api/users/me");
-        const userData = await user.json();
+        //const user = await fetch("http://localhost:5000/api/users/me");
+        //const userData = await user.json();
+        const userData = await User.findById(req.user._id);
         const query = { status: "draft", author: userData};
         const drafts = await Story.find(query);
         res.json(drafts);
@@ -150,7 +151,8 @@ async function postAsRequest(req, res) {
             words: req.body.words,
             summary: req.body.summary,
             author: req.body.author,
-            story: req.body.story
+            story: req.body.story,
+            vetting: req.body.vetting
         });
 
         res.status(201).json(request);
@@ -164,6 +166,15 @@ async function getBetaRequests(req, res) {
     try {
         const betaRequests = await BetaRequest.find();
         res.json(betaRequests);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+}
+
+async function getBetaRequest(req, res) {
+    try {
+        const betaRequest = await BetaRequest.findById(req.params.id);
+        res.json(betaRequest);
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
@@ -187,5 +198,6 @@ module.exports = {
     getDrafts,
     postAsRequest,
     getBetaRequests,
+    getBetaRequest,
     listByAuthor,
 };

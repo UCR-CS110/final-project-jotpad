@@ -43,15 +43,17 @@ export default function RequestListing({}) {
     useEffect(() => {
         const fetchStories = async () => {
             try {
-                const res = await fetch("http://localhost:5000/api/stories/drafts");
+                const res = await fetch("http://localhost:5000/api/stories/drafts", {
+                    credentials: 'include'
+                });
                 if (!res.ok) throw new Error("We couldn't fetch your drafts.");
 
                 const data = await res.json();
                 setDrafts(data);
             } catch (err) {
-                //
+                setError(err.message);
             } finally {
-                //
+                setLoading(false);
             }
         };
 
@@ -60,8 +62,10 @@ export default function RequestListing({}) {
 
     useEffect(() => {
         const setInfo = async () => {
-            setTitle(fields.title);
-            setTags((fields.tags).toString());
+            if (fields != null) {
+                setTitle(fields.title);
+                setTags((fields.tags).toString());
+            }
             setSummary('');
             setGenre('');
             setVetting(true);
@@ -95,7 +99,9 @@ export default function RequestListing({}) {
         setLoading(true);
 
         try {
-            const me = await fetch("http://localhost:5000/api/users/me");
+            const me = await fetch("http://localhost:5000/api/users/me", {
+                credentials: 'include'
+            });
             const author = await me.json();
 
             const payload = {
@@ -106,11 +112,13 @@ export default function RequestListing({}) {
                 words: fields.wordCount,
                 summary,
                 author,
-                story: fields
+                story: fields,
+                vetting: vetting
             };
 
             const res = await fetch("http://localhost:5000/api/stories/requests/" + fields._id, {
                 method: "POST",
+                credentials: 'include',
                 headers: {
                     "Content-Type": "application/json",
                 },
@@ -160,7 +168,7 @@ export default function RequestListing({}) {
             <div>{drafts.map((draft) => (
                 <div>
                     <input type="radio" id={draft._id} name="story-selection" value={draft._id} onClick={() => setFields(draft)}></input>
-                    <label for={draft._id} style={{ fontSize: '18px' }}>{draft.title}</label>
+                    <label htmlFor={draft._id} style={{ fontSize: '18px' }}>{draft.title}</label>
                 <br />
                 </div>
                 ))}

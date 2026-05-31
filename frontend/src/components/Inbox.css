@@ -29,11 +29,17 @@
 
 .subject-line-full {
     display: flex;
+    gap: 10%;
 }
 
 .full-message-x {
-    margin-left: 50%;
     background-color: red;
     max-width: 20px;
     max-height: 20px;
+}
+
+.inbox-blurbs {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
 }
