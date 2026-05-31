@@ -7,10 +7,12 @@ const betaRequestSchema = new mongoose.Schema({
   tags: [ String ],
   words: Number,
 
-  Summary: String,
+  summary: String,
 
   author: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
   story : { type: mongoose.Schema.Types.ObjectId, ref: "Story" },
+
+  vetting: Boolean
   
 
 }, { timestamps: true });

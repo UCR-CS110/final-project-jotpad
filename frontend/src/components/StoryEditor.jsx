@@ -23,7 +23,9 @@ export default function StoryEditor() {
         setError(null);
         setLoading(true);
 
-        const user = await fetch("http://localhost:5000/api/users/me");
+        const user = await fetch("http://localhost:5000/api/users/me", {
+            credentials: 'include'
+        });
         const author = await user.json();
 
         const payload = {
@@ -40,6 +42,7 @@ export default function StoryEditor() {
             const token = localStorage.getItem("token");
             const res = await fetch("/api/stories", {
                 method: "POST",
+                credentials: 'include',
                 headers: {
                     "Content-Type": "application/json",
                     "Authorization": `Bearer ${token}`

@@ -1,54 +1,75 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import "./Inbox.css"
 
-function Message({subject, from, date, blurb, setVisible }) {
-    function changeWidth() {
-        const messages = document.getElementsByClassName("inbox-message");
-        for (let message of messages) {
-            message.style.width = '300px';
-        }
-    }
-    return (
-        <div className="inbox-message" onClick={() => {setVisible(1);}}>
-            <h2>{subject}</h2>
-            <p>{from}</p>
-            <p>{date}</p>
-            <br />
-            <p>{blurb}</p>
-        </div>
-    );
-}
-
-function FullMessage({subject, from, date, message, setVisible}) {
+function FullMessage({message, setMessage}) {
+    let accept;
+    if (message.accepted) {
+        accept = <button disabled>You have already accepted the request.</button>
+    } else accept = <button>Click here to accept the request.</button>
     return (
         <div className="full-message">
             <div className="subject-line-full">
-                <h2>{subject}</h2>
-                <button className="full-message-x" onClick={() => {setVisible(0)}}>X</button>
+                <h2>{message.subject}</h2>
+                <button className="full-message-x" onClick={() => {setMessage(null)}}>X</button>
             </div>
-            <p>{from}</p>
-            <p>{date}</p>
+            <p>Admin</p>
+            <p>date</p>
             <br />
-            <p>{message}</p>
-            <Link to="/story" style={{ color: 'red', textDecoration: 'none' }}>Read Story</Link>
+            <p>{message.text}</p>
+            <Link to={message.link} style={{ color: 'red', textDecoration: 'none' }}>Visit profile</Link>
+            <br /> <br />
+            {accept}
         </div>
     );
 }
 
-//some function to load the blurbs of all the messages when page loads
-//some function to call the api and get the full message when it's clicked on?
-
-
 export default function Inbox({}) {
+    const [inbox, setInbox] = useState(null);
     const [currentMessage, setCurrentMessage] = useState(null);
-    const [fullVisible, setFullVisible] = useState(false);
+    const [error, setError] = useState(null);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        async function fetchInbox() {
+          try {
+            const res = await fetch("http://localhost:5000/api/inbox", {
+                credentials: 'include',
+            });
+      
+            if (!res.ok) {
+              throw new Error("Failed to fetch inbox");
+            }
+      
+            const data = await res.json();
+              
+            setInbox(data);
+
+            console.log(data);
+          } catch (err) {
+            setError(err.message);
+          } finally {
+            setLoading(false);
+          }
+        }
+          
+        fetchInbox();
+    }, []);
 
     const navigate = useNavigate();
 
     let fullMessage;
-    if (fullVisible) {
-        fullMessage = <FullMessage subject="Offer for beta reading accepted" from="SwedishFish" date="01/24/2026" message="Your offer to beta-read The Martian City has been accepted! Click here to read the story:" setVisible={setFullVisible}/>
+    if (currentMessage != null) {
+        fullMessage = <FullMessage message={currentMessage} setMessage={setCurrentMessage} />
+        //subject="Offer for beta reading accepted" from="SwedishFish" date="01/24/2026" message="Your offer to beta-read The Martian City has been accepted! Click here to read the story:" setVisible={setFullVisible}/>
+    }
+
+    if (loading) {
+        return <div style={{ padding: "20px" }}>Loading profile...</div>;
+    }
+
+    if (error) {
+        return <div style={{ padding: "20px", color: "red" }}>{error}</div>;
     }
 
     return (
@@ -59,7 +80,16 @@ export default function Inbox({}) {
         <button id="inbox-back" onClick={() => navigate('/dashboard')}>Back</button>
 
         <div className="inbox-all">
-        <Message subject="Offer for beta reading accepted" from="SwedishFish" date="01/24/2026" blurb="Your offer to beta-read The Martian City has been accepted!..." setVisible={setFullVisible} />
+        <div className="inbox-blurbs">{inbox.map((message) => (
+            <div className="inbox-message" onClick={() => {setCurrentMessage(message);}}>
+            <h2>{message.subject}</h2>
+            <p>Admin</p>
+            <p>date</p>
+            <br />
+            <p>{message.text}</p>
+            </div>
+        ))}
+        </div>
 
         <div className="full-message-display">
             {fullMessage}

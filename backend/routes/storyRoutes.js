@@ -10,6 +10,7 @@ const {
     getDrafts,
     postAsRequest,
     getBetaRequests,
+    getBetaRequest,
     listByAuthor,
 } = require("../controllers/storyController.js");
 
@@ -23,6 +24,7 @@ router.get("/author/:id", listByAuthor);
 router.get("/:id", getStory);
 router.put("/:id", updateStory);
 router.delete("/:id", deleteStory);
+router.get("/requests/:id", getBetaRequest);
 router.post("/requests/:id", postAsRequest);
 
 module.exports = router;

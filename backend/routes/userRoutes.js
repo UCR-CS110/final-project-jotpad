@@ -8,7 +8,7 @@ const DEV_USER_ID = "000000000000000000000001";
 
 router.get("/me", async (req, res) => {
   try {
-    const user = await User.findById(DEV_USER_ID);
+    const user = await User.findById(req.user._id);
     if (!user) return res.status(404).json({ message: "User not found" });
 
     res.json(user);
@@ -21,6 +21,17 @@ router.get("/me", async (req, res) => {
 router.get("/", async (req, res) => {
   const users = await User.find();
   res.json(users);
+});
+
+router.get("/byUsername/:username", async (req, res) => {
+  try {
+    const user = await User.find({username: req.params.username});
+    if (!user) return res.status(404).json({ message: "User not found" });
+
+    res.json(user[0]);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
 });
 
 

@@ -18,6 +18,12 @@ const userSchema = new mongoose.Schema({
 
   followers: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
 
+  inbox: [ {subject: { type: String, required: true },
+  text: { type: String },
+  type: { type: String, required: true },
+  link: { type: String }, 
+  accepted: {type: Boolean } } ],
+
 }, { timestamps: true });
 
 module.exports = mongoose.model("User", userSchema);
