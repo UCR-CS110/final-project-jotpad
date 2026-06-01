@@ -243,7 +243,7 @@ export default function RequestListing({}) {
                 
                 <tbody>
                 
-                {!loading && !error && requests.map((request) => (
+                {!loading && !error && filteredRequests.map((request) => (
                     <BetaRequest 
                             title={request.title || "Sin título"} 
                             id={request._id} 
