@@ -15,7 +15,7 @@ export default function RequestDetails({}) {
     if (messageVisible) {
         requestMessage = <p id="beta-request-message">Thank you for offering to beta read! You will receive a message in your inbox about next steps if the author accepts your request.</p>
     }
-    
+
     useEffect(() => {
         async function sendRequestMessage() {
             try {
@@ -29,6 +29,9 @@ export default function RequestDetails({}) {
                     text: "You have received a new request to beta-read your story, " + info.title + "!. To view the requesting party's profile, click the link below.",
                     type: "Request to beta-read",
                     link: "/profile/"+user.username,
+                    story: info.story,
+                    beta_request: info,
+                    sender: user
                 };
                 const res = await fetch("http://localhost:5000/api/inbox/" + info.author, {
                     method: "POST",

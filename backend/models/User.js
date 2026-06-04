@@ -22,7 +22,10 @@ const userSchema = new mongoose.Schema({
   text: { type: String },
   type: { type: String, required: true },
   link: { type: String }, 
-  accepted: {type: Boolean } } ],
+  accepted: {type: Boolean },
+  story: { type: mongoose.Schema.Types.ObjectId, ref: "Story" },
+  beta_request: { type: mongoose.Schema.Types.ObjectId, ref: "BetaRequest" },
+  sender: { type: mongoose.Schema.Types.ObjectId, ref: "User" } } ],
 
 }, { timestamps: true });
 
