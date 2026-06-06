@@ -1,5 +1,3 @@
-import banner from '../assets/banner.jpg';
-import pfp from '../assets/pfp.webp';
 import { useState, useEffect } from 'react';
 import { useParams } from 'react-router';
 import { useNavigate, Link } from 'react-router-dom';
@@ -24,6 +22,10 @@ export default function Profile() {
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(true);
     const [works, setWorks] = useState([]);
+    const [bio, setBio] = useState('');
+    const [editing, setEditing] = useState(false);
+    const [pfpLink, setPfpLink] = useState('https://upload.wikimedia.org/wikipedia/commons/a/ac/Default_pfp.jpg');
+    const [bannerLink, setBannerLink] = useState('https://www.solidbackgrounds.com/images/950x350/950x350-gray-solid-color-background.jpg');
 
     const navigate = useNavigate();
     let params = useParams();
@@ -42,6 +44,9 @@ export default function Profile() {
             const data = await res.json();
             if (data.username == params.username) {
                 setProfile(data);
+                setBio(data.bio);
+                if (data.pfpLink) setPfpLink(data.pfpLink);
+                if (data.bannerLink) setBannerLink(data.bannerLink);
                 setIsMe(true);
             } else {
                 const res2 = await fetch("http://localhost:5000/api/users/byUsername/" + params.username, {
@@ -54,6 +59,9 @@ export default function Profile() {
     
                 const data2 = await res2.json();
                 setProfile(data2);
+                setBio(data2.bio);
+                if (data2.pfpLink) setPfpLink(data2.pfpLink);
+                if (data2.bannerLink) setBannerLink(data2.bannerLink);
             }
 
           } catch (err) {
@@ -88,6 +96,34 @@ export default function Profile() {
         if (profile != null) getWorks();
     }, [profile]);
 
+        async function updateInfo() {
+            setEditing(false);
+            try {
+                let payload = {
+                    bio: bio,
+                };
+                if (pfpLink) payload.pfpLink = pfpLink;
+                if (bannerLink) payload.bannerLink = bannerLink;
+                const res = await fetch("http://localhost:5000/api/users/me", {
+                    method: "PUT",
+                    credentials: 'include',
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(payload)
+                });
+        
+                if (!res.ok) {
+                  throw new Error("Failed to update information");
+                }
+        
+            } catch (err) {
+                setError(err.message);
+            } finally {
+                setLoading(false);
+            }
+        }
+
     
   if (loading) {
     return <div style={{ padding: "20px" }}>Loading profile...</div>;
@@ -100,15 +136,47 @@ export default function Profile() {
     return (
         <div className="profile">
             {isMe ? <button id="profile-back" onClick={() => navigate('/dashboard')}>Back</button> : <></>}
-            <img src={banner} alt="Banner" id="profile-banner" />
-            <img src={pfp} alt="Profile Pic" id="profile-pic"/>
+            <img src={bannerLink} alt="Banner" id="profile-banner" />
+            {editing ? 
+            <form id="set-banner">
+                <textarea style={{ width: '600px' }}
+                    value={bannerLink}
+                    onChange={(e) => setBannerLink(e.target.value)}
+                    placeholder="Link to banner picture"
+                />
+            </form>
+            : <></>}
+            <img src={pfpLink} alt="Profile Pic" id="profile-pic"/>
+            {editing ? 
+            <form id="set-pfp">
+                <textarea style={{ width: '300px' }}
+                    value={pfpLink}
+                    onChange={(e) => setPfpLink(e.target.value)}
+                    placeholder="Link to profile picture"
+                />
+            </form>
+            : <></>}
             <div className="profile-top">
                 <h2 id="profile-username">{profile.username}</h2>
-                <h3 id="profile-description">Moo. (?)</h3>
+                    {!editing ? 
+                    <h3 id="profile-description">{bio}</h3> :
+                    <form>
+                        <textarea style={{ width: '400px' }}
+                            value={bio}
+                            onChange={(e) => setBio(e.target.value)}
+                            placeholder="Write something about yourself!"
+                            rows="2"
+                        />
+                    </form>
+                    }
                 <h3 id="profile-works-created"><strong>Works created:</strong> {works.length}</h3>
             </div>
-
-
+            <br />
+            <div className="profile-edit-button">{isMe ? !editing ? 
+            <button style={{ fontSize: '15px' }} onClick={() => setEditing(true)}>Edit Bio</button>
+                :
+            <button style={{ fontSize: '15px' }} onClick={() => updateInfo()}>Save</button>
+            : <></>}</div>
             <hr></hr>
             <h2 id="profile-my-stories">My stories</h2>
             <div className="profile-stories">

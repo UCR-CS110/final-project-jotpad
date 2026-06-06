@@ -17,15 +17,33 @@
     margin-left: 15%;
 }
 
+#set-banner {
+    position: absolute;
+    top: 150px;
+    margin-left: 37%;
+}
+
 #profile-pic {
     border-radius: 50%;
     width: 200px;
     height: 200px;
-    z-index: 100;
+    z-index: 50;
     position: absolute;
     top: 270px;
     justify-self: center;
     margin-right: 92%;
+}
+
+#set-pfp {
+    position: absolute;
+    top: 350px;
+    margin-left: 32%;
+    z-index: 100;
+}
+
+.profile-edit-button {
+    justify-self: center;
+    margin-top: 20px;
 }
 
 .profile-top {

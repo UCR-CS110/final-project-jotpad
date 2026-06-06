@@ -50,9 +50,9 @@ router.get("/:id", async (req, res) => {
 router.put("/me", async (req, res) => {
   try {
     const updated = await User.findByIdAndUpdate(
-      DEV_USER_ID,
+      req.user._id,
       { $set: req.body },
-      { new: true }
+      { returnDocument: 'after' }
     );
 
     res.json(updated);

@@ -131,6 +131,7 @@ export default function Inbox({}) {
 
         <button id="inbox-back" onClick={() => navigate('/dashboard')}>Back</button>
 
+        {inbox.length == 0 ? <div style={{ padding: "20px" }}>There are no messages currently.</div> : <></>}
         <div className="inbox-all">
         <div className="inbox-blurbs">{inbox.map((message) => (
             <div className="inbox-message" onClick={() => {setCurrentMessage(message);}}>

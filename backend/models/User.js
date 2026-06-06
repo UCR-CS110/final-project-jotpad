@@ -18,6 +18,9 @@ const userSchema = new mongoose.Schema({
 
   followers: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
 
+  pfpLink: String,
+  bannerLink: String,
+
   inbox: [ {subject: { type: String, required: true },
   text: { type: String },
   type: { type: String, required: true },

@@ -3,13 +3,13 @@ import { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import Profile from "./Profile.jsx";
 import InboxIcon from '../assets/inbox.png'
-import pfp from '../assets/pfp.webp';
 import './Dashboard.css'
 
 function Dashboard() {
   const [profile, setProfile] = useState(null);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [pfpLink, setPfpLink] = useState('https://upload.wikimedia.org/wikipedia/commons/a/ac/Default_pfp.jpg');
 
   useEffect(() => {
     async function fetchProfile() {
@@ -25,6 +25,7 @@ function Dashboard() {
         const data = await res.json();
           
         setProfile(data);
+        if (data.pfpLink) setPfpLink(data.pfpLink);
       } catch (err) {
         setError(err.message);
       } finally {
@@ -48,13 +49,13 @@ function Dashboard() {
       <div className="dashboard-start">
         <div>
           <h1>My Dashboard</h1>
-          <div style={{ display: 'flex' }}>
+          <div style={{ display: 'flex', gap: '10px' }}>
           <h2>Welcome, {profile.username}!</h2>
           <h2 style={{ color: 'green' }}>My Credits: {profile.credits} 🪙</h2>
           </div>
         </div>
         <div className="dashboard-dropdown">
-        <img src={pfp} className="dashboard-pfp dashboard-dropdown-button"></img>
+        <img src={pfpLink} className="dashboard-pfp dashboard-dropdown-button"></img>
         <div className="dashboard-dropdown-content">
           <p><Link to={"/profile/"+profile.username}>My Profile</Link></p>
           <p><Link to="/inbox">Inbox <img src={InboxIcon} className="inbox-icon"></img></Link></p>
