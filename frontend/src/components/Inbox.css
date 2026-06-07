@@ -13,14 +13,16 @@
     background-color: rgb(190, 190, 129);
     width: 1200px;
     max-height: 250px;
+    border-radius: 2px;
 }
 
 .full-message {
-    background-color: rgb(86, 93, 97);
+    background-color: rgb(119, 128, 133);
     height: 800px;
     position: absolute;
     justify-self: center;
     margin-right: 20%;
+    border-radius: 2px;
 }
 
 .inbox-all {

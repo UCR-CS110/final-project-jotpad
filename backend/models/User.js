@@ -23,6 +23,7 @@ const userSchema = new mongoose.Schema({
 
   inbox: [ {subject: { type: String, required: true },
   text: { type: String },
+  date: { type: String },
   type: { type: String, required: true },
   link: { type: String }, 
   accepted: {type: Boolean },

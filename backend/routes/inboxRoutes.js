@@ -38,6 +38,7 @@ router.post("/:id", async (req, res) => {
     user.inbox.push({
         subject: req.body.subject,
         text: req.body.text || "",
+        date: req.body.date,
         type: req.body.type,
         link: req.body.link || '',
         accepted: false,

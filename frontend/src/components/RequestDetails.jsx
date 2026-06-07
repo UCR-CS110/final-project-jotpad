@@ -27,6 +27,7 @@ export default function RequestDetails({}) {
                 const payload = {
                     subject: "New request to beta-read your story, " + info.title,
                     text: "You have received a new request to beta-read your story, " + info.title + "!. To view the requesting party's profile, click the link below.",
+                    date: Date().toLocaleString(),
                     type: "Request to beta-read",
                     link: "/profile/"+user.username,
                     story: info.story,
@@ -89,17 +90,19 @@ export default function RequestDetails({}) {
 
     let button;
     if (info.vetting == 1) button = <button id="request-to-beta" onClick={() => setMessageVisible(true)}>Request to beta read</button>
-    else button = <button id="request-to-beta">Go to story</button>
+    else button = <button id="request-to-beta" onClick={() => {navigate("/story/"+info.story)}}>Go to story</button>
 
     return (
         <div>
-        <button onClick={() => navigate('/betarequests')}>Back</button>
+        <button onClick={() => navigate('/betarequests')} style={{ fontSize: '20px', marginTop: '20px' }}>Back</button>
     <div className="request-details">
-        <h2>{params.id}</h2>
-        <h3>{info.genre}</h3>
-        <p>{info.summary}</p>
+        <h1 style={{ justifySelf: 'center', paddingTop: '15px' }}>{info.title}</h1>
+        <p style={{ justifySelf: 'center' }}><i>(ID {params.id})</i></p>
+        <h3 style={{ justifySelf: 'center', fontSize: '22px' }}>Genre: {info.genre}</h3>
+        <h3 style={{ justifySelf: 'center', fontSize: '22px' }}>Tags: {info.tags.length == 0 ? "(none)" : info.tags.map((tag, index) => (<>{tag}{index == info.tags.length-1 ? "" : ", "}</>))}</h3>
+        <p style={{ justifySelf: 'center', fontSize: '20px' }}>{info.summary}</p>
         {requestMessage}
-        {button}
+        <div style={{ justifySelf: 'center' }}>{button}</div>
     </div>
     </div>
     );

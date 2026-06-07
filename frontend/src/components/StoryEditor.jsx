@@ -106,7 +106,6 @@ export default function StoryEditor() {
                             className="se-select"
                         >
                             <option value="draft">Draft</option>
-                            <option value="in_review">In Review</option>
                             <option value="public">Public</option>
                         </select>
                     </label>

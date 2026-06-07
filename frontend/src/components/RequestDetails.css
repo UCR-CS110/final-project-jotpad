@@ -1,6 +1,9 @@
 .request-details {
-    background-color: gray;
-    height: 800px;
+    background-color: rgb(207, 206, 195);
+    height: 500px;
+    border-radius: 10px;
+    width: 95%;
+    justify-self: center;
 }
 
 #request-to-beta {
@@ -9,6 +12,9 @@
 }
 
 #beta-request-message {
-    margin-top: 800px;
+    margin-top: 300px;
     color: rgb(132, 192, 132);
+    height: 20px;
+    justify-self: center;
+    font-size: 20px;
 }

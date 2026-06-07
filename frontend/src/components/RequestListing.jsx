@@ -8,7 +8,7 @@ function BetaRequest({title, id, genre, tags, words, feedbackTypes, link }) {
             <td className="request-title">{title}</td>
             <td className="request-genre">{genre}</td>
             <td className="request-id">{id}</td>
-            <td className="request-tags">{tags.map(tag => (<>{tag}, </>))}</td>
+            <td className="request-tags">{tags.map((tag, index) => (<>{tag}{index == tags.length-1 ? "" : ", "}</>))}</td>
             <td className="request-words">{words} words</td>
             <td className="request-link"><Link to={link} key={id} style={{ textDecoration: 'none', color: 'inherit' }}>See page</Link></td>
 
