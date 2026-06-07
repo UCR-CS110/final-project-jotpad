@@ -6,7 +6,6 @@ export default function StoryEditor() {
     const [title, setTitle] = useState("");
     const [content, setContent] = useState("");
     const [tagsInput, setTagsInput] = useState("");
-    const [isPrivate, setIsPrivate] = useState(false);
     const [status, setStatus] = useState("draft");
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
@@ -33,7 +32,6 @@ export default function StoryEditor() {
             title,
             content,
             tags: tagsInput.split(",").map(t => t.trim()).filter(Boolean),
-            isPrivate,
             status,
             wordCount,
         };
@@ -60,7 +58,6 @@ export default function StoryEditor() {
             setContent("");
             setTagsInput("");
             setStatus("draft");
-            setIsPrivate(false);
             alert("Story posted!");
             navigate("/dashboard");
         } catch (err) {
@@ -101,16 +98,7 @@ export default function StoryEditor() {
                 />
 
                 <div className="se-row">
-                    <label className="se-checkbox">
-                        <input
-                            type="checkbox"
-                            checked={isPrivate}
-                            onChange={(e) => setIsPrivate(e.target.checked)}
-                        />
-                        Private (unpublished)
-                    </label>
-
-                    <label className="se-select-label">
+                    <label className="se-select-label" style={{ marginLeft: "0px" }}>
                         Status
                         <select
                             value={status}

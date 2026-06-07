@@ -5,7 +5,6 @@ function Draft({draft}) {
     const [title, setTitle] = useState(draft.title);
     const [content, setContent] = useState(draft.content);
     const [tagsInput, setTagsInput] = useState((draft.tags).toString());
-    const [isPrivate, setIsPrivate] = useState(draft.isPrivate);
     const [status, setStatus] = useState("draft");
     const [wordCount, setWordCount] = useState(draft.wordCount);
     const [loading, setLoading] = useState(false);
@@ -34,7 +33,6 @@ function Draft({draft}) {
                 title,
                 content,
                 tags: tagsInput.split(",").map(t => t.trim()).filter(Boolean),
-                isPrivate,
                 status,
                 wordCount,
             };
@@ -90,15 +88,6 @@ function Draft({draft}) {
                 />
 
                 <div className="se-row">
-                    <label className="se-checkbox">
-                        <input
-                            type="checkbox"
-                            checked={isPrivate}
-                            onChange={(e) => setIsPrivate(e.target.checked)}
-                        />
-                        Private (unpublished)
-                    </label>
-
                     <label className="se-select-label">
                         Status
                         <select

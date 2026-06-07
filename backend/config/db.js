@@ -2,10 +2,16 @@ const mongoose = require('mongoose');
 
 async function connectDB() {
     try {
-        await mongoose.connect(process.env.MONGODB_URI);
+        const uri = process.env.MONGODB_URI;
+        console.log('MongoDB URI:', uri ? uri.slice(0, 40) + '...' : uri);
+        await mongoose.connect(uri, {
+            tls: true,
+            tlsInsecure: true,
+        });
         console.log('MongoDB connected');
     } catch (err) {
-        console.log(error);
+        console.log(err);
+        process.exit(1);
     }
 }
 

@@ -15,8 +15,6 @@ const storySchema = new mongoose.Schema({
 
   wordCount: Number,
 
-  isPrivate: { type: Boolean, default: false },
-
 }, { timestamps: true });
 
 module.exports = mongoose.model("Story", storySchema);

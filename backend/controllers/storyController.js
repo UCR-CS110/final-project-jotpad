@@ -6,40 +6,6 @@ function getUserIdFromReq(req) {
     return req.user?.id || req.user?._id || req.userId;
 }
 
-/*async function createStory(req, res) {
-    console.log("USER FROM REQ:", req.user);
-    console.log("AUTHOR:", getUserIdFromReq(req));
-    try {
-        const author = getUserIdFromReq(req);
-        if (!author) return res.status(401).json({ message: "Unauthorized" });
-
-        const user = await User.findById(author);
-        if (!user) return res.status(404).json({ message: "User not found" });
-
-        if ((user.credits ?? 0) < 1) {
-            return res.status(403).json({ message: "Insufficient credits to post story" });
-        }
-
-        user.credits -= 1;
-        await user.save();
-
-        const story = await Story.create({
-            author,
-            title: req.body.title,
-            content: req.body.content,
-            tags: req.body.tags || [],
-            status: req.body.status || "draft",
-            wordCount: req.body.wordCount,
-            isPrivate: req.body.isPrivate ?? false,
-        });
-
-        res.status(201).json(story);
-    } catch (error) {
-        res.status(500).json({ message: error.message });
-    }
-}
-*/
-
 async function createStory(req, res) {
     try {
         console.log("Anonymous story submission");
@@ -51,7 +17,6 @@ async function createStory(req, res) {
             tags: req.body.tags || [],
             status: req.body.status || "public",
             wordCount: req.body.wordCount,
-            isPrivate: false,
         });
 
         res.status(201).json(story);
@@ -65,10 +30,10 @@ async function getStory(req, res) {
         const story = await Story.findById(req.params.id).populate("author", "username");
         if (!story) return res.status(404).json({ message: "Story not found" });
 
-        if (story.isPrivate) {
+        if (story.status === "draft") {
             const me = getUserIdFromReq(req);
             if (!me || String(me) !== String(story.author._id)) {
-                return res.status(403).json({ message: "Private story" });
+                return res.status(403).json({ message: "Draft story" });
             }
         }
 
@@ -111,7 +76,7 @@ async function deleteStory(req, res) {
 async function listPublicStories(req, res) {
     try {
         const { tag, page = 1, limit = 20 } = req.query;
-        const query = { status: "public", isPrivate: false };
+        const query = { status: "public" };
         if (tag) query.tags = tag;
 
         const stories = await Story.find(query)
@@ -131,7 +96,7 @@ async function getDrafts(req, res) {
         //const user = await fetch("http://localhost:5000/api/users/me");
         //const userData = await user.json();
         const userData = await User.findById(req.user._id);
-        const query = { status: "draft", author: userData};
+        const query = { status: "draft", author: userData };
         const drafts = await Story.find(query);
         res.json(drafts);
     } catch (error) {
@@ -142,7 +107,7 @@ async function getDrafts(req, res) {
 async function postAsRequest(req, res) {
     try {
         const duplicate = await BetaRequest.findById(req.params.id);
-        if (duplicate) return res.status(400).json({ message : "Duplicate request" });
+        if (duplicate) return res.status(400).json({ message: "Duplicate request" });
         const request = await BetaRequest.create({
             title: req.body.title || "(work in progress)",
             genre: req.body.genre || "(none)",
@@ -158,6 +123,25 @@ async function postAsRequest(req, res) {
         res.status(201).json(request);
 
     } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+}
+
+async function listInReviewStories(req, res) {
+    try {
+        const { tag, page = 1, limit = 20 } = req.query;
+        const query = { status: "in_review" };
+        if (tag) query.tags = tag;
+
+        const stories = await Story.find(query)
+            .sort({ createdAt: -1 })
+            .skip((page - 1) * limit)
+            .limit(Number(limit))
+            .populate("author", "username");
+
+        res.json(stories);
+    } catch (error) {
+        console.error(error);
         res.status(500).json({ message: error.message });
     }
 }
@@ -195,6 +179,7 @@ module.exports = {
     updateStory,
     deleteStory,
     listPublicStories,
+    listInReviewStories,
     getDrafts,
     postAsRequest,
     getBetaRequests,
