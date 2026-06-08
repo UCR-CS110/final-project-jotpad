@@ -96,7 +96,7 @@ async function getDrafts(req, res) {
         //const user = await fetch("http://localhost:5000/api/users/me");
         //const userData = await user.json();
         const userData = await User.findById(req.user._id);
-        const query = { status: "draft", author: userData };
+        const query = { status: {$in: ["draft", "in_review"]}, author: userData };
         const drafts = await Story.find(query);
         res.json(drafts);
     } catch (error) {
@@ -119,6 +119,8 @@ async function postAsRequest(req, res) {
             story: req.body.story,
             vetting: req.body.vetting
         });
+
+        await Story.findByIdAndUpdate(req.body.id, {status: "in_review"});
 
         res.status(201).json(request);
 
@@ -166,7 +168,7 @@ async function getBetaRequest(req, res) {
 
 async function listByAuthor(req, res) {
     try {
-        const stories = await Story.find({ author: req.params.id }).sort({ createdAt: -1 });
+        const stories = await Story.find({ author: req.params.id, status: "public" }).sort({ createdAt: -1 });
         res.json(stories);
     } catch (error) {
         res.status(500).json({ message: error.message });

@@ -3,14 +3,14 @@ import { useParams } from 'react-router';
 import { useNavigate, Link } from 'react-router-dom';
 import './Profile.css'
 
-function ProfileStory({ image, title, author, description }) {
+function ProfileStory({ image, title, id, author, wordCount, description }) {
     return (
         <div className="profile-story">
             <img src={image} alt="story-cover1" className="profile-story-cover" />
             <div className="profile-story-info">
                 <h2 className="profile-story-title">{title}</h2>
-                <p className="profile-story-author">By <Link to={"/profile"}>{author}</Link></p>
-                <p className="profile-story-description">{description}</p>
+                <p className="profile-story-author">By <Link to={"/profile/"+author}>{author}</Link></p>
+                <p className="profile-story-description">Word count: {wordCount} | {description}...</p>
             </div>
         </div>
     );
@@ -256,8 +256,10 @@ export default function Profile() {
                     key={work._id || work.title}
                     image={"https://static.vecteezy.com/system/resources/thumbnails/002/219/582/small/illustration-of-book-icon-free-vector.jpg"}
                     title={work.title}
+                    id={work._id}
                     author={profile.username}
-                    description="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+                    wordCount={work.wordCount}
+                    description={work.content.slice(0, 100)}
                     />
                 ))}
                 

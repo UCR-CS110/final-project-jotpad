@@ -88,8 +88,8 @@
 
 .profile-story {
     background-color: rgb(205, 212, 189);
-    width: 120%;
-    margin-right: 10%;
+    width: 1300px;
+    margin-left: 5%;
     height: 150px;
     border-radius: 10px;
     justify-self: center;
@@ -124,7 +124,7 @@
 .profile-story-description {
     color: black;
     text-align: left;
-    margin-top: -1%;
+    margin-top: -5px;
 }
 
 .profile-stories {

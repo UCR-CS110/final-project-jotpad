@@ -2,9 +2,8 @@ import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import "./Inbox.css"
 
-function FullMessage({message, setMessage}) {
+function FullMessage({message, setMessage, accepted}) {
     const [error, setError] = useState(null);
-    const [accepted, setAccepted] = useState(message.accepted);
     
     const [rating, setRating] = useState(0);
     const [ratingSubmitted, setRatingSubmitted] = useState(false);
@@ -16,7 +15,11 @@ function FullMessage({message, setMessage}) {
                 method: "PUT",
                 credentials: 'include'
             });
-            if (setAccept.ok) setAccepted(true);
+            if (setAccept.ok) {
+                let button = document.getElementById("accept-request-button");
+                console.log(button);
+                button.disabled = true;
+            }
 
             const me = await fetch("http://localhost:5000/api/users/me", {
                 credentials: 'include'
@@ -31,8 +34,9 @@ function FullMessage({message, setMessage}) {
             const payload = {
                 subject: "Request to beta-read story " + betaRequest.title + " has been accepted",
                 text: "Your request to beta-read the story " + betaRequest.title + " has been accepted. To read the story and leave feedback, click the link below.",
+                date: Date().toLocaleString(),
                 type: "Request to beta read accepted",
-                link: "tba",
+                link: "/story/" + betaRequest.story,
                 story: message.story,
                 beta_request: message.beta_request,
                 sender: user
@@ -85,18 +89,11 @@ function FullMessage({message, setMessage}) {
         return <div style={{ padding: "20px", color: "red" }}>{error}</div>;
     }
 
-    let accept;
-    if (accepted) {
-        accept = <button disabled>You have already accepted the request.</button>;
-    } else if (message.type == "Request to beta-read") {
-        accept = <button onClick={() => sendAcceptMessage()}>Click here to accept the request.</button>;
-    }
-
     let ratingSection = null;
     if (message.type === "Feedback received") {
         if (ratingSubmitted) {
             ratingSection = (
-                <div style={{ marginTop: '20px', padding: '15px', backgroundColor: '#eef8eb', borderRadius: '5px' }}>
+                <div style={{ marginTop: '20px', padding: '15px', backgroundColor: '#eef8eb', borderRadius: '5px', marginLeft: '10px' }}>
                     <p style={{ margin: 0, color: '#28a745', fontWeight: 'bold' }}>
                         You rated this feedback {rating} out of 5 stars.
                     </p>
@@ -104,7 +101,7 @@ function FullMessage({message, setMessage}) {
             );
         } else {
             ratingSection = (
-                <div style={{ marginTop: '20px', padding: '15px', border: '1px solid #ccc', borderRadius: '5px', backgroundColor: '#f9f9f9' }}>
+                <div style={{ marginTop: '20px', padding: '15px', border: '1px solid #ccc', borderRadius: '5px', backgroundColor: '#f9f9f9', marginLeft: '10px' }}>
                     <h4 style={{ margin: '0 0 10px 0' }}>Rate this feedback:</h4>
                     <p style={{ fontSize: '0.9rem', color: '#666', marginBottom: '10px' }}>
                         Did you find this review helpful? Your rating will appear on the beta reader's public profile.
@@ -138,26 +135,27 @@ function FullMessage({message, setMessage}) {
     return (
         <div className="full-message">
             <div className="subject-line-full">
-                <h2>{message.subject}</h2>
+                <h2 style={{ paddingLeft: '10px' }}>{message.subject}</h2>
                 <button className="full-message-x" onClick={() => {setMessage(null)}}>X</button>
             </div>
-            <p>Admin</p>
-            <p>date</p>
+            <p style={{ paddingLeft: '10px' }}>Admin</p>
+            <p style={{ paddingLeft: '10px' }}>Sent: {message.date}</p>
             <br />
-            <p style={{ whiteSpace: 'pre-wrap' }}>{message.text}</p>
-            <Link to={message.link} style={{ color: 'red', textDecoration: 'none' }}>{(message.type == "Request to beta read accepted") ? "View work" : "Visit profile"}</Link>
+            <p style={{ paddingLeft: '10px', whiteSpace: 'pre-wrap' }}>{message.text}</p>
+            <Link to={message.link} style={{ color: 'red', textDecoration: 'none', paddingLeft: '10px' }}>{(message.type == "Request to beta read accepted") ? "View work" : "Visit profile"}</Link>
             <br /> <br />
-            {accept}
             
+            {accepted ? <button disabled style={{ marginLeft: '10px' }}>You have already accepted the request.</button> : (message.type == "Request to beta-read") ? <button onClick={() => sendAcceptMessage()} style={{ marginLeft: '10px' }} id="accept-request-button">Click here to accept the request.</button> : <></>}
+        
             {ratingSection}
         </div>
     );
 }
 
-
 export default function Inbox({}) {
     const [inbox, setInbox] = useState(null);
     const [currentMessage, setCurrentMessage] = useState(null);
+    const [fullMessage, setFullMessage] = useState(null);
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(true);
 
@@ -186,13 +184,20 @@ export default function Inbox({}) {
         fetchInbox();
     }, []);
 
-    const navigate = useNavigate();
+    useEffect(() => {
+        async function updateFullMessage() {
+            console.log(currentMessage);
+            if (currentMessage) {
+                setFullMessage(<FullMessage message={currentMessage} setMessage={setCurrentMessage} accepted={currentMessage.accepted}/>);
+            } else {
+                setFullMessage(null);
+            }
+        }
+        updateFullMessage();
+        
+    }, [currentMessage]);
 
-    let fullMessage;
-    if (currentMessage != null) {
-        fullMessage = <FullMessage message={currentMessage} setMessage={setCurrentMessage} />
-        //subject="Offer for beta reading accepted" from="SwedishFish" date="01/24/2026" message="Your offer to beta-read The Martian City has been accepted! Click here to read the story:" setVisible={setFullVisible}/>
-    }
+    const navigate = useNavigate();
 
     if (loading) {
         return <div style={{ padding: "20px" }}>Loading profile...</div>;
@@ -213,11 +218,11 @@ export default function Inbox({}) {
         <div className="inbox-all">
         <div className="inbox-blurbs">{inbox.map((message) => (
             <div className="inbox-message" onClick={() => {setCurrentMessage(message);}}>
-            <h2>{message.subject}</h2>
-            <p>Admin</p>
-            <p>date</p>
+            <h2 style={{ paddingLeft: '10px' }}>{message.subject}</h2>
+            <p style={{ paddingLeft: '10px' }}>Admin</p>
+            <p style={{ paddingLeft: '10px' }}>date</p>
             <br />
-            <p>{message.text}</p>
+            <p style={{ paddingLeft: '10px' }}>{message.text}</p>
             </div>
         ))}
         </div>

@@ -5,7 +5,7 @@ function Draft({draft}) {
     const [title, setTitle] = useState(draft.title);
     const [content, setContent] = useState(draft.content);
     const [tagsInput, setTagsInput] = useState((draft.tags).toString());
-    const [status, setStatus] = useState("draft");
+    const [status, setStatus] = useState(draft.status);
     const [wordCount, setWordCount] = useState(draft.wordCount);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
@@ -95,8 +95,8 @@ function Draft({draft}) {
                             onChange={(e) => setStatus(e.target.value)}
                             className="se-select"
                         >
-                            <option value="draft">Draft</option>
-                            <option value="in_review">In Review</option>
+                            {draft.status == "draft" ? <option value="draft">Draft</option> : <></>}
+                            {draft.status == "in_review" ? <option value="in_review">In Review</option> : <></>}
                             <option value="public">Public</option>
                         </select>
                     </label>
