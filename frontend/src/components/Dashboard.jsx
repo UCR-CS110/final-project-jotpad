@@ -84,6 +84,7 @@ function Dashboard() {
           <p><Link to={"/profile/"+profile.username}>My Profile</Link></p>
           <p><Link to="/inbox">Inbox <img src={InboxIcon} className="inbox-icon"></img></Link></p>
           <p><Link to="/drafts">Drafts</Link></p>
+          <p><Link to="/logout">Logout</Link></p>
         </div>
       </div>
       </div>

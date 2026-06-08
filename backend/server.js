@@ -42,5 +42,11 @@ app.use("/api/stories", require("./routes/storyRoutes.js"));
 app.use("/api/login", require("./routes/loginRoutes.js"));
 app.use("/api/inbox", require("./routes/inboxRoutes.js"));
 
+app.post('/api/logout', (req, res) => {
+  req.session.destroy(() => {
+    res.clearCookie('connect.sid').status(200).send({message: "Logged out" });
+  });
+});
+
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

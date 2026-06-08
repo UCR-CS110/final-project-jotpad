@@ -145,7 +145,7 @@ export default function Inbox({}) {
             <div className="inbox-message" onClick={() => {setCurrentMessage(message);}}>
             <h2 style={{ paddingLeft: '10px' }}>{message.subject}</h2>
             <p style={{ paddingLeft: '10px' }}>Admin</p>
-            <p style={{ paddingLeft: '10px' }}>date</p>
+            <p style={{ paddingLeft: '10px' }}>Sent: {message.date}</p>
             <br />
             <p style={{ paddingLeft: '10px' }}>{message.text}</p>
             </div>
