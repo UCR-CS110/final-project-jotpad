@@ -11,6 +11,7 @@ import Inbox from './components/Inbox';
 import RequestDetails from './components/RequestDetails';
 import StoryEditor from './components/StoryEditor';
 import Drafts from './components/Drafts';
+import PublicStory from './components/PublicStory';
 import "./App.css"
 import StoryView from './components/StoryView';
 import './App.css';
@@ -26,6 +27,7 @@ function App() {
         <Route element={<Layout />}>
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/storyeditor" element={<StoryEditor />} />
+          <Route path="/discover/story/:id" element={<PublicStory />}/>
           <Route path="/story" element={<StoryReader />} />
           <Route path="/story/:id" element={<StoryView />} />
           <Route path="/profile/:username" element={<Profile />} />

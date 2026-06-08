@@ -31,6 +31,8 @@ const userSchema = new mongoose.Schema({
   beta_request: { type: mongoose.Schema.Types.ObjectId, ref: "BetaRequest" },
   sender: { type: mongoose.Schema.Types.ObjectId, ref: "User" } } ],
 
+  ratings: [ { story: { type: mongoose.Schema.Types.ObjectId, ref: "Story" }, stars: { type: Number } }]
+
 }, { timestamps: true });
 
 module.exports = mongoose.model("User", userSchema);

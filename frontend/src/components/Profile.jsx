@@ -8,7 +8,7 @@ function ProfileStory({ image, title, id, author, wordCount, description }) {
         <div className="profile-story">
             <img src={image} alt="story-cover1" className="profile-story-cover" />
             <div className="profile-story-info">
-                <h2 className="profile-story-title">{title}</h2>
+                <h2 className="profile-story-title"><Link to={"/discover/story/"+id}>{title}</Link></h2>
                 <p className="profile-story-author">By <Link to={"/profile/"+author}>{author}</Link></p>
                 <p className="profile-story-description">Word count: {wordCount} | {description}...</p>
             </div>
@@ -224,9 +224,9 @@ export default function Profile() {
             <div className="profile-edit-button">
                 {isMe ? (
                     !editing ? 
-                        <button style={{ fontSize: '15px' }} onClick={() => setEditing(true)}>Edit Bio</button>
+                        <button style={{ fontSize: '15px', borderRadius: '10px', backgroundColor: '#82cad2', border: '1px solid #cfcfcf', padding: '12px' }} onClick={() => setEditing(true)}>Edit Bio</button>
                     :
-                        <button style={{ fontSize: '15px' }} onClick={() => updateInfo()}>Save</button>
+                        <button style={{ fontSize: '15px', borderRadius: '10px', backgroundColor: '#82cad2', border: '1px solid #cfcfcf', padding: '12px' }} onClick={() => updateInfo()}>Save</button>
                 ) : (
                     <button 
                         style={{ 

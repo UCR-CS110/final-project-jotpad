@@ -4,13 +4,17 @@
 
 #profile-back {
     position: absolute;
-    top: 90px;
+    top: 120px;
     left: 220px;
     font-size: 20px;
+    border-radius: 10px;
+    background-color: #82cad2;
+    border: 1px solid gray;
+    padding: 10px 20px;
 }
 
 #profile-banner {
-    height: 500px;
+    height: 550px;
     width: 70%;
     margin-bottom: -6px;
     align-self: center;
@@ -44,13 +48,14 @@
 .profile-edit-button {
     justify-self: center;
     margin-top: 20px;
+    margin-bottom: 15px;
 }
 
 .profile-top {
     background-color: rgb(234, 235, 220);
     width: 1000px;
     justify-self: center;
-    height: 200px;
+    height: 250px;
     position: absolute;
     top: 380px;
     margin-left: 100%;

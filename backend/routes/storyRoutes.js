@@ -10,6 +10,9 @@ const {
     listInReviewStories,
     getDrafts,
     postAsRequest,
+    postRating,
+    putRating,
+    getUserRating,
     getBetaRequests,
     getBetaRequest,
     listByAuthor,
@@ -21,6 +24,9 @@ router.post("/", createStory);
 router.get("/public", listPublicStories);
 router.get("/in_review", listInReviewStories);
 router.get("/drafts", getDrafts);
+router.get("/rating/me/:id", getUserRating);
+router.post("/rating/:id", postRating);
+router.put("/rating/:id", putRating);
 router.get("/requests", getBetaRequests);
 router.get("/author/:id", listByAuthor);
 router.get("/requests/:id", getBetaRequest);

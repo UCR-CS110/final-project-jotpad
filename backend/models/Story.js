@@ -15,6 +15,9 @@ const storySchema = new mongoose.Schema({
 
   wordCount: Number,
 
+  avgRating: Number,
+  numRatings: {type: Number, default: 0 }
+
 }, { timestamps: true });
 
 module.exports = mongoose.model("Story", storySchema);

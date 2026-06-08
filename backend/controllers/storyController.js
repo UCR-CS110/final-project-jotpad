@@ -157,6 +157,70 @@ async function getBetaRequests(req, res) {
     }
 }
 
+async function postRating(req, res) {
+    try {
+        const story = await Story.findById(req.params.id);
+        if (!story) return res.status(404).json({ message: "Story not found" });
+
+        if (story.numRatings == 0) {
+            story.numRatings = 1;
+            story.avgRating = req.body.rating;
+        } else {
+            story.avgRating = ((story.avgRating*story.numRatings) + req.body.rating)/(story.numRatings+1);
+            story.numRatings++;
+        }
+        await story.save();
+        const user = await User.findById(req.user._id);
+        user.ratings.push({story: story._id, stars: req.body.rating});
+        await user.save();
+        res.json({ message: "Successfully posted rating" });
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+}
+
+async function putRating(req, res) {
+    try {
+        const story = await Story.findById(req.params.id);
+        if (!story) return res.status(404).json({ message: "Story not found" });
+        const user = await User.findById(req.user._id);
+        let prevRating;
+        user.ratings.forEach((rating) => {
+            if (rating.story.toString() == story._id) {
+                prevRating = rating.stars;
+                rating.stars = req.body.rating;
+            }
+        });
+        await user.save();
+        story.avgRating = ((story.avgRating*story.numRatings) - prevRating + req.body.rating)/(story.numRatings);
+        await story.save();
+        res.json({ message: "Successfully changed rating" });
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+}
+
+async function getUserRating(req, res) {
+    try {
+        const story = await Story.findById(req.params.id);
+        if (!story) return res.status(404).json({ message: "Story not found" });
+        const user = await User.findById(req.user._id);
+        let curRating;
+        user.ratings.forEach((rating) => {
+            if (rating.story.toString() == story._id) {
+                curRating = rating.stars;
+            }
+        });
+        if (!curRating) {
+            res.json({'stars': 'none'});
+        } else {
+            res.json({'stars': curRating});
+        }
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+}
+
 async function getBetaRequest(req, res) {
     try {
         const betaRequest = await BetaRequest.findById(req.params.id);
@@ -184,6 +248,9 @@ module.exports = {
     listInReviewStories,
     getDrafts,
     postAsRequest,
+    postRating,
+    putRating,
+    getUserRating,
     getBetaRequests,
     getBetaRequest,
     listByAuthor,

@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import './Drafts.css'
 
 function Draft({draft}) {
@@ -115,6 +116,8 @@ export default function Drafts({}) {
     const [drafts, setDrafts] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    
+    const navigate = useNavigate();
 
     useEffect(() => {
         async function fetchDrafts() {
@@ -157,6 +160,8 @@ export default function Drafts({}) {
     return (
         <div>
             <br />
+            <button style={{ fontSize: '18px', borderRadius: '10px', backgroundColor: '#82cad2', border: '1px solid gray', padding: '10px 18px' }} onClick={() => navigate("/dashboard")}>Back</button>
+            <br /> <br />
             {drafts.map((curDraft) => (
                 <>
                 <Draft draft={curDraft} />

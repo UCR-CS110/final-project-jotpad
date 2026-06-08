@@ -94,7 +94,7 @@ export default function RequestDetails({}) {
 
     return (
         <div>
-        <button onClick={() => navigate('/betarequests')} style={{ fontSize: '20px', marginTop: '20px' }}>Back</button>
+        <button onClick={() => navigate('/betarequests')} style={{ fontSize: '20px', margin: '20px', marginLeft: '30px', marginTop: '25px', marginBottom: '10px', borderRadius: '10px', backgroundColor: '#82cad2', border: '1px solid gray', padding: '10px 20px' }}>Back to requests</button>
     <div className="request-details">
         <h1 style={{ justifySelf: 'center', paddingTop: '15px' }}>{info.title}</h1>
         <p style={{ justifySelf: 'center' }}><i>(ID {params.id})</i></p>

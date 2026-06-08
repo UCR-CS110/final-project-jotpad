@@ -17,7 +17,6 @@ function FullMessage({message, setMessage, accepted}) {
             });
             if (setAccept.ok) {
                 let button = document.getElementById("accept-request-button");
-                console.log(button);
                 button.disabled = true;
             }
 
@@ -186,7 +185,6 @@ export default function Inbox({}) {
 
     useEffect(() => {
         async function updateFullMessage() {
-            console.log(currentMessage);
             if (currentMessage) {
                 setFullMessage(<FullMessage message={currentMessage} setMessage={setCurrentMessage} accepted={currentMessage.accepted}/>);
             } else {

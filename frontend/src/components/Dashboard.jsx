@@ -99,7 +99,7 @@ function Dashboard() {
         {requests.map((request) => (
           <div className="dashboard-recommendation-story">
             <strong>{request.title}</strong> ({request.genre})
-            <button className="recommendation-story-button" style={{ marginLeft: '10px' }} onClick={() => {navigate("/requests/"+request._id)}}>Review to earn 1 Credit</button>
+            <button className="recommendation-story-button" style={{ marginLeft: '10px', fontSize: '18px', borderRadius: '10px', backgroundColor: '#e6d688', border: '1px solid gray', padding: '10px 18px' }} onClick={() => {navigate("/requests/"+request._id)}}>Review to earn 1 Credit</button>
           </div>
         ))}
       </ul>
