@@ -27,6 +27,11 @@ export default function Profile() {
     const [pfpLink, setPfpLink] = useState('https://upload.wikimedia.org/wikipedia/commons/a/ac/Default_pfp.jpg');
     const [bannerLink, setBannerLink] = useState('https://www.solidbackgrounds.com/images/950x350/950x350-gray-solid-color-background.jpg');
 
+    const [followersCount, setFollowersCount] = useState(0);
+    const [followingCount, setFollowingCount] = useState(0);
+    const [isFollowing, setIsFollowing] = useState(false);
+    const [isFollowLoading, setIsFollowLoading] = useState(false);
+
     const navigate = useNavigate();
     let params = useParams();
 
@@ -42,12 +47,20 @@ export default function Profile() {
             }
     
             const data = await res.json();
+            
+            const loadSocialData = (profileData) => {
+                setFollowersCount(profileData.followers ? profileData.followers.length : 0);
+                setFollowingCount(profileData.following ? profileData.following.length : 0);
+                if (profileData.isFollowedByMe) setIsFollowing(true);
+            };
+
             if (data.username == params.username) {
                 setProfile(data);
                 setBio(data.bio);
                 if (data.pfpLink) setPfpLink(data.pfpLink);
                 if (data.bannerLink) setBannerLink(data.bannerLink);
                 setIsMe(true);
+                loadSocialData(data);
             } else {
                 const res2 = await fetch("http://localhost:5000/api/users/byUsername/" + params.username, {
                     credentials: 'include'
@@ -62,6 +75,8 @@ export default function Profile() {
                 setBio(data2.bio);
                 if (data2.pfpLink) setPfpLink(data2.pfpLink);
                 if (data2.bannerLink) setBannerLink(data2.bannerLink);
+                setIsMe(false);
+                loadSocialData(data2);
             }
 
           } catch (err) {
@@ -72,7 +87,7 @@ export default function Profile() {
         }
     
         fetchProfile();
-    }, []);
+    }, [params.username]);
 
     useEffect(() => {
         async function getWorks() {
@@ -96,33 +111,61 @@ export default function Profile() {
         if (profile != null) getWorks();
     }, [profile]);
 
-        async function updateInfo() {
-            setEditing(false);
-            try {
-                let payload = {
-                    bio: bio,
-                };
-                if (pfpLink) payload.pfpLink = pfpLink;
-                if (bannerLink) payload.bannerLink = bannerLink;
-                const res = await fetch("http://localhost:5000/api/users/me", {
-                    method: "PUT",
-                    credentials: 'include',
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
-                    body: JSON.stringify(payload)
-                });
-        
-                if (!res.ok) {
-                  throw new Error("Failed to update information");
-                }
-        
-            } catch (err) {
-                setError(err.message);
-            } finally {
-                setLoading(false);
+    async function updateInfo() {
+        setEditing(false);
+        try {
+            let payload = {
+                bio: bio,
+            };
+            if (pfpLink) payload.pfpLink = pfpLink;
+            if (bannerLink) payload.bannerLink = bannerLink;
+            const res = await fetch("http://localhost:5000/api/users/me", {
+                method: "PUT",
+                credentials: 'include',
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(payload)
+            });
+    
+            if (!res.ok) {
+              throw new Error("Failed to update information");
             }
+    
+        } catch (err) {
+            setError(err.message);
+        } finally {
+            setLoading(false);
         }
+    }
+
+    async function handleFollowToggle() {
+        setIsFollowLoading(true);
+        try {
+            const token = localStorage.getItem("token");
+            const res = await fetch(`http://localhost:5000/api/users/${profile._id}/follow`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${token}`
+                }
+            });
+
+            if (!res.ok) throw new Error("Failed to follow user");
+
+            if (isFollowing) {
+                setFollowersCount(prev => prev - 1);
+                setIsFollowing(false);
+            } else {
+                setFollowersCount(prev => prev + 1);
+                setIsFollowing(true);
+            }
+        } catch (err) {
+            console.error(err);
+        } finally {
+            setIsFollowLoading(false);
+        }
+    }
 
     
   if (loading) {
@@ -170,19 +213,47 @@ export default function Profile() {
                     </form>
                     }
                 <h3 id="profile-works-created"><strong>Works created:</strong> {works.length}</h3>
+                
+                <div style={{ display: 'flex', gap: '20px', marginTop: '10px' }}>
+                    <span style={{ fontSize: '1.2rem' }}><strong>{followersCount}</strong> Followers</span>
+                    <span style={{ fontSize: '1.2rem' }}><strong>{followingCount}</strong> Following</span>
+                </div>
             </div>
             <br />
-            <div className="profile-edit-button">{isMe ? !editing ? 
-            <button style={{ fontSize: '15px' }} onClick={() => setEditing(true)}>Edit Bio</button>
-                :
-            <button style={{ fontSize: '15px' }} onClick={() => updateInfo()}>Save</button>
-            : <></>}</div>
+            
+            <div className="profile-edit-button">
+                {isMe ? (
+                    !editing ? 
+                        <button style={{ fontSize: '15px' }} onClick={() => setEditing(true)}>Edit Bio</button>
+                    :
+                        <button style={{ fontSize: '15px' }} onClick={() => updateInfo()}>Save</button>
+                ) : (
+                    <button 
+                        style={{ 
+                            fontSize: '15px', 
+                            padding: '8px 16px',
+                            backgroundColor: isFollowing ? '#e4e6eb' : '#007bff', 
+                            color: isFollowing ? 'black' : 'white',
+                            border: 'none',
+                            borderRadius: '5px',
+                            cursor: 'pointer',
+                            fontWeight: 'bold'
+                        }} 
+                        onClick={handleFollowToggle}
+                        disabled={isFollowLoading}
+                    >
+                        {isFollowLoading ? "..." : isFollowing ? "Following" : "Follow"}
+                    </button>
+                )}
+            </div>
+            
             <hr></hr>
-            <h2 id="profile-my-stories">My stories</h2>
+            <h2 id="profile-my-stories">{isMe ? "My stories" : "Stories"}</h2>
             <div className="profile-stories">
                 
                 {works.map((work) => (
                     <ProfileStory
+                    key={work._id || work.title}
                     image={"https://static.vecteezy.com/system/resources/thumbnails/002/219/582/small/illustration-of-book-icon-free-vector.jpg"}
                     title={work.title}
                     author={profile.username}
@@ -191,9 +262,6 @@ export default function Profile() {
                 ))}
                 
             </div>
-
-
         </div>
     );
-
 }
