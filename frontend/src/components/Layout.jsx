@@ -8,7 +8,7 @@ export default function Layout({}) {
         <Link to="/dashboard" style={{ color: 'white', marginRight: '20px', textDecoration: 'none' }}>Dashboard</Link>
         <Link to="/storyeditor" style={{ color: 'white', marginRight: '20px', textDecoration: 'none' }}>Write Story</Link>
         <Link to="/betarequests" style={{ color: 'white', textDecoration: 'none', marginRight: '20px' }}>Find Beta Requests</Link>
-        <Link to="/story" style={{ color: 'white', textDecoration: 'none' }}>Read Story</Link>
+        <Link to="/story" style={{ color: 'white', textDecoration: 'none' }}>Discover Stories</Link>
             
         <div className="search-all">
           <input type="text" id="searchbar-all" placeholder="Search" />

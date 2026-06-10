@@ -1,36 +1,41 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from 'react-router-dom';
 
 function StoryReader() {
-  const [publicStories, setPublicStories] = useState([]);
-  const [inReviewStories, setInReviewStories] = useState([]);
+  const [ratedStories, setRatedStories] = useState([]);
+  const [unratedStories, setUnratedStories] = useState([]);
   const [selectedStory, setSelectedStory] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
+  const navigate = useNavigate();
+
   useEffect(() => {
     const fetchStories = async () => {
       try {
-        const [publicRes, inReviewRes] = await Promise.all([
+        /*const [publicRes, inReviewRes] = await Promise.all([
           fetch("/api/stories/public"),
           fetch("/api/stories/in_review")
-        ]);
+        ]);*/
+        const publicRes = await fetch("/api/stories/public");
 
-        if (!publicRes.ok || !inReviewRes.ok) {
+        if (!publicRes.ok ) {
           throw new Error("Failed to fetch stories");
         }
 
-        const [publicData, inReviewData] = await Promise.all([
+        /*const [publicData, inReviewData] = await Promise.all([
           publicRes.json(),
           inReviewRes.json()
-        ]);
+        ]);*/
+        const publicData = await publicRes.json();
 
-        setPublicStories(publicData);
-        setInReviewStories(inReviewData);
+        setRatedStories(publicData.rated.slice(0, 5));
+        setUnratedStories(publicData.unrated.slice(0, 5));
 
-        if (publicData.length > 0) {
-          setSelectedStory(publicData[0]);
-        } else if (inReviewData.length > 0) {
-          setSelectedStory(inReviewData[0]);
+        if (publicData.rated.length > 0) {
+          setSelectedStory(publicData.rated[0]);
+        } else if (publicData.unrated.length > 0) {
+          setSelectedStory(publicData.unrated[0]);
         }
       } catch (err) {
         setError(err.message);
@@ -55,87 +60,27 @@ function StoryReader() {
   }
 
   const statusLabel =
-    selectedStory.status === "in_review"
-      ? "In Review"
-      : selectedStory.status === "public"
-        ? "Public"
-        : "Draft";
+    selectedStory.avgRating > 0
+      ? "Top Rated"
+      : "Unrated"
 
   const badgeColor =
-    selectedStory.status === "public"
+    selectedStory.avgRating > 0
       ? "#28a745"
-      : selectedStory.status === "in_review"
-        ? "#ff9800"
-        : "#6c757d";
+      : "#ff9800"
+  //"#6c757d";
 
-  return (
-    <div style={{ padding: "20px", display: "flex", gap: "20px", minHeight: "100vh" }}>
-      <div style={{ width: "300px", borderRight: "1px solid #ddd", overflowY: "auto" }}>
-        <h3>Public Stories</h3>
-        {publicStories.length === 0 && <p style={{ color: "#666" }}>No public stories available.</p>}
-        {publicStories.map((s) => (
-          <div
-            key={s._id}
-            onClick={() => setSelectedStory(s)}
-            style={{
-              padding: "10px",
-              cursor: "pointer",
-              borderRadius: "6px",
-              marginBottom: "5px",
-              background: selectedStory?._id === s._id ? "#eee" : "transparent",
-              fontWeight: selectedStory?._id === s._id ? "bold" : "normal"
-            }}
-          >
-            {s.title || "Untitled"}
-          </div>
-        ))}
+  let stars = "";
+  let starsCount = 1;
+  for (starsCount; starsCount <= selectedStory.avgRating; starsCount++) {
+    stars+="★";
+  }
+  if (starsCount-0.5 <= selectedStory.avgRating) {
+    stars+="⯨";
+  }
 
-        <h3 style={{ marginTop: "24px" }}>In Review Stories</h3>
-        {inReviewStories.length === 0 && <p style={{ color: "#666" }}>No in-review stories available.</p>}
-        {inReviewStories.map((s) => (
-          <div
-            key={s._id}
-            onClick={() => setSelectedStory(s)}
-            style={{
-              padding: "10px",
-              cursor: "pointer",
-              borderRadius: "6px",
-              marginBottom: "5px",
-              background: selectedStory?._id === s._id ? "#eee" : "transparent",
-              fontWeight: selectedStory?._id === s._id ? "bold" : "normal"
-            }}
-          >
-            {s.title || "Untitled"}
-          </div>
-        ))}
-      </div>
-
-      <div style={{ flex: 2, padding: "0 20px", overflowY: "auto" }}>
-        <div style={{ display: "flex", alignItems: "center", gap: "12px", marginBottom: "10px" }}>
-          <h2 style={{ margin: 0 }}>{selectedStory.title}</h2>
-          <span
-            style={{
-              padding: "6px 12px",
-              borderRadius: "999px",
-              backgroundColor: badgeColor,
-              color: "#fff",
-              fontSize: "0.9rem"
-            }}
-          >
-            {statusLabel}
-          </span>
-        </div>
-
-        <div style={{ fontSize: "14px", color: "#666", marginBottom: "10px" }}>
-          {selectedStory.tags?.length ? `Tags: ${selectedStory.tags.join(", ")}` : "No tags"}
-        </div>
-
-        <p style={{ whiteSpace: "pre-line", lineHeight: "1.6" }}>
-          {selectedStory.content}
-        </p>
-      </div>
-
-      <div style={{ flex: 1, borderLeft: "1px solid #ddd", paddingLeft: "20px" }}>
+  /* const feedbackSection = 
+  <div style={{ flex: 1, borderLeft: "1px solid #ddd", paddingLeft: "20px" }}>
         <h3>Feedback</h3>
 
         <textarea
@@ -154,7 +99,87 @@ function StoryReader() {
         >
           Submit Review
         </button>
+      </div>*/
+  return (
+    <div>
+      <h2 style={{ justifySelf: 'center', backgroundColor: '#89d1f0', borderRadius: '20px', padding: '10px 100px', border: '1px solid black' }}>Recommended For You</h2>
+      <hr />
+      <div style={{ padding: "20px", display: "flex", gap: "20px", minHeight: "100vh" }}>
+      <div style={{ width: "300px", borderRight: "1px solid #ddd", overflowY: "auto" }}>
+        <h3 style={{ fontSize: '25px' }}>Top Rated Stories</h3>
+        {ratedStories.length === 0 && <p style={{ color: "#666" }}>No rated stories available.</p>}
+        {ratedStories.map((s) => (
+          <div
+            key={s._id}
+            onClick={() => setSelectedStory(s)}
+            style={{
+              padding: "10px",
+              cursor: "pointer",
+              borderRadius: "6px",
+              marginBottom: "5px",
+              fontSize: '20px',
+              background: selectedStory?._id === s._id ? "#eee" : "transparent",
+              fontWeight: selectedStory?._id === s._id ? "bold" : "normal"
+            }}
+          >
+            {s.title || "Untitled"}
+            <br />
+            {s.avgRating ? <>({s.avgRating} stars)</> : <></>}
+          </div>
+        ))}
+
+        <h3 style={{ marginTop: "24px", fontSize: '25px' }}>New Stories</h3>
+        {unratedStories.length === 0 && <p style={{ color: "#666" }}>No unrated stories available.</p>}
+        {unratedStories.map((s) => (
+          <div
+            key={s._id}
+            onClick={() => setSelectedStory(s)}
+            style={{
+              padding: "10px",
+              cursor: "pointer",
+              borderRadius: "6px",
+              marginBottom: "5px",
+              fontSize: '20px',
+              background: selectedStory?._id === s._id ? "#eee" : "transparent",
+              fontWeight: selectedStory?._id === s._id ? "bold" : "normal"
+            }}
+          >
+            {s.title || "Untitled"}
+          </div>
+        ))}
       </div>
+
+      <div style={{ flex: 2, padding: "0 20px", overflowY: "auto" }}>
+        <div style={{ display: "flex", alignItems: "center", gap: "12px", marginBottom: "10px" }}>
+          <h2 style={{ margin: 0, fontSize: '25px' }}>{selectedStory.title}</h2>
+          <span
+            style={{
+              padding: "6px 12px",
+              borderRadius: "999px",
+              backgroundColor: badgeColor,
+              color: "#fff",
+              fontSize: "0.9rem"
+            }}
+          >
+            {statusLabel}
+          </span>
+        </div>
+
+        <div style={{ fontSize: "18px", color: "#666", marginBottom: "10px" }}>
+          {selectedStory.tags?.length ? `Tags: ${selectedStory.tags.join(", ")}` : "No tags"}
+        </div>
+
+        <div style={{ color: '#cfa635', fontSize: '25px' }}>
+          {stars}
+        </div>
+
+        <p style={{ whiteSpace: "pre-line", lineHeight: "1.6", fontSize: '20px' }}>
+          {selectedStory.content.slice(0, 100) + "..."}
+        </p>
+        <div style={{ justifySelf: 'center', paddingRight: '20%' }}><button style={{ fontSize: '20px', backgroundColor: '#c6bb88', borderRadius: '5px' }} onClick={() => navigate("/discover/story/" + selectedStory._id)}>View story</button></div>
+      </div>
+
+    </div>
     </div>
   );
 }

@@ -9,6 +9,7 @@ export default function PublicStory({}) {
     const [stars, setStars] = useState(0);
     const [newRating, setNewRating] = useState(true);
     const [disabled, setDisabled] = useState(true);
+    const [submittedMessage, setSubmittedMessage] = useState(null);
 
     let params = useParams();
 
@@ -73,6 +74,8 @@ export default function PublicStory({}) {
                     }
                     
                     const data = await res.json();
+                    setSubmittedMessage(<p style={{ color: 'green', justifySelf: 'center', fontSize: '18px' }}>Thank you for rating the story!</p>);
+                    setNewRating(false);
                 } else {
                     const res = await fetch("http://localhost:5000/api/stories/rating/" + params.id, {
                     method: "PUT",
@@ -87,6 +90,7 @@ export default function PublicStory({}) {
                     }
                     
                     const data = await res.json();
+                    setSubmittedMessage(<p style={{ color: 'green', justifySelf: 'center', fontSize: '18px' }}>Your rating has been successfully changed.</p>);
                 }
 
             } catch (err) {
@@ -135,7 +139,7 @@ export default function PublicStory({}) {
             <hr />
         </div>
         <div style={{ justifySelf: 'center' }}>
-            <h3>Liked the story? Give it a rating!</h3>
+            <h3 style={{ justifySelf: 'center' }}>Liked the story? Give it a rating!</h3>
             <button id="star-1" style={{ color: 'gray', backgroundColor: 'white', border: 'none', fontSize: '30px' }} onClick={() => setRating(1)}>★</button>
             <button id="star-2" style={{ color: 'gray', backgroundColor: 'white', border: 'none', fontSize: '30px' }} onClick={() => setRating(2)}>★</button>
             <button id="star-3" style={{ color: 'gray', backgroundColor: 'white', border: 'none', fontSize: '30px' }} onClick={() => setRating(3)}>★</button>
@@ -143,7 +147,8 @@ export default function PublicStory({}) {
             <button id="star-5" style={{ color: 'gray', backgroundColor: 'white', border: 'none', fontSize: '30px' }} onClick={() => setRating(5)}>★</button>
             {disabled ? 
             <button id="stars-submit" style={{ marginLeft: '10px', fontSize: '18px', backgroundColor: '#69bc4e' }} disabled>Submit</button>
-            : <button id="stars-submit" style={{ marginLeft: '10px', fontSize: '18px', backgroundColor: '#69bc4e' }} onClick={() => rateStory()}>Submit</button>}
+            : <button id="stars-submit" style={{ marginLeft: '10px', fontSize: '18px', backgroundColor: '#69bc4e' }} onClick={() => rateStory()}>{newRating ? "Submit" : "Edit rating"}</button>}
+            {submittedMessage}
             </div>
         </>
     );

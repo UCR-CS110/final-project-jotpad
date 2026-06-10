@@ -251,6 +251,7 @@ export default function Profile() {
             <h2 id="profile-my-stories">{isMe ? "My stories" : "Stories"}</h2>
             <div className="profile-stories">
                 
+                {works.length == 0 ? <h3 style={{ marginLeft: '25%', minWidth: '500px' }}>There are no works to display from this author.</h3> : <></>}
                 {works.map((work) => (
                     <ProfileStory
                     key={work._id || work.title}

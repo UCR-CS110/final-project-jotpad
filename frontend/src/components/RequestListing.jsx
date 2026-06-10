@@ -22,6 +22,9 @@ export default function RequestListing({}) {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [searchTerm, setSearchTerm] = useState("");
+    const [typeTag, setTypeTag] = useState("");
+    const [searchTags, setSearchTags] = useState([]);
+    const [searchGenre, setSearchGenre] = useState("");
     const [addOptions, setAddOptions] = useState(false);
     const [drafts, setDrafts] = useState([]);
     const [fields, setFields] = useState(null);
@@ -139,13 +142,35 @@ export default function RequestListing({}) {
         }
     }
 
+    function addSearchTag() {
+        let newSearchTags = searchTags.slice();
+        if (typeTag != "") {
+            newSearchTags.push(typeTag);
+            setSearchTags(newSearchTags);
+            setTypeTag("");
+        }
+    }
+
+    function removeSearchTag(tag) {
+        let newSearchTags = searchTags.slice();
+        newSearchTags.splice(newSearchTags.indexOf(tag), 1);
+        setSearchTags(newSearchTags);
+    }
+
     let requestSuccessful;
     if (requestSubmitted) requestSuccessful = <p style={{ fontSize: '18px', color: 'green' }}>Your request has been successfully posted!</p>
 
 
     const filteredRequests = requests.filter(request => {
         const titleMatch = (request.title || "").toLowerCase().includes(searchTerm.toLowerCase());
-        return titleMatch;
+        let tagsMatch = false;
+        request.tags.forEach((tag) => {
+            tagsMatch = tagsMatch || (searchTags.includes(tag));
+        });
+        tagsMatch = tagsMatch || (searchTags.length == 0);
+        const genreMatch = (request.genre || "").toLowerCase().includes(searchGenre.toLowerCase());
+        const allMatch = titleMatch && tagsMatch && genreMatch;
+        return allMatch;
     });
     
     return (
@@ -158,7 +183,36 @@ export default function RequestListing({}) {
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 />
-                <button id="requests-search-button">Search</button>
+            </div>
+
+            <div className="genre-search" style={{ justifySelf: 'center', marginBottom: '20px' }}>
+                <input 
+                type="text" 
+                id="search-genre" 
+                style={{ fontSize: '15px' }}
+                placeholder="Search by genre" 
+                value={searchGenre}
+                onChange={(e) => setSearchGenre(e.target.value)}
+                />
+            </div>
+
+            <div className="filter-by-tags" style={{ justifySelf: 'center' }}>
+                <input 
+                type="text" 
+                id="filter-tags"
+                style={{ fontSize: '15px' }} 
+                placeholder="Type tags" 
+                value={typeTag}
+                onChange={(e) => setTypeTag(e.target.value)}
+                />
+                <button style={{ fontSize: '15px' }} onClick={() => addSearchTag()}>Add tag</button>
+            </div>
+
+            <div style={{ justifySelf: 'center', fontSize: '15px', marginBottom: '20px' }}>
+                {searchTags.map((searchTag) => (
+                    <div style={{ marginBottom: '-20px' }}><p style={{ backgroundColor: 'orange', borderRadius: '15px', padding: '5px 10px', display: 'inline-block' }}>{searchTag}</p>
+                    <button style={{ backgroundColor: 'red', border: 'none', marginLeft: '2px', borderRadius: '7px' }} onClick={() => removeSearchTag(searchTag)}>x</button></div>
+                ))}
             </div>
 
             <div className="add-request">

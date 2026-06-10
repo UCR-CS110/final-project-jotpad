@@ -76,16 +76,26 @@ async function deleteStory(req, res) {
 async function listPublicStories(req, res) {
     try {
         const { tag, page = 1, limit = 20 } = req.query;
-        const query = { status: "public" };
-        if (tag) query.tags = tag;
+        const query = { status: "public", avgRating: { $gt: 0 } };
+        const unratedQuery = { status: "public", avgRating: { $exists: false } };
+        if (tag) {
+            query.tags = tag;
+            unratedQuery.tags = tag;
+        }
 
-        const stories = await Story.find(query)
+        const ratedStories = await Story.find(query)
+            .sort({ avgRating: -1, createdAt: -1 })
+            .skip((page - 1) * limit)
+            .limit(Number(limit))
+            .populate("author", "username");
+
+        const unratedStories = await Story.find(unratedQuery)
             .sort({ createdAt: -1 })
             .skip((page - 1) * limit)
             .limit(Number(limit))
             .populate("author", "username");
 
-        res.json(stories);
+        res.json({rated: ratedStories, unrated: unratedStories});
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
