@@ -19,8 +19,32 @@ router.get("/me", async (req, res) => {
 
 
 router.get("/", async (req, res) => {
-  const users = await User.find();
-  res.json(users);
+  try {
+    const currentUser = await User.findById(req.user._id);
+    
+    if (currentUser.role !== "admin") {
+      return res.status(403).json({ message: "Access denied: Only for Admins" });
+    }
+
+    const users = await User.find();
+    res.json(users);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
+
+router.delete("/:id", async (req, res) => {
+  try {
+    const currentUser = await User.findById(req.user._id);
+    if (currentUser.role !== "admin") {
+      return res.status(403).json({ message: "Access denied: Only for Admins" });
+    }
+    
+    await User.findByIdAndDelete(req.params.id);
+    res.json({ message: "User banned/deleted successfully" });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
 });
 
 router.get("/byUsername/:username", async (req, res) => {
@@ -60,5 +84,44 @@ router.put("/me", async (req, res) => {
     res.status(500).json({ message: err.message });
   }
 });
+
+router.post("/:id/follow", async (req, res) => {
+    try {
+        const userToFollow = await User.findById(req.params.id);
+        const currentUser = await User.findById(req.user._id);
+
+        if (!userToFollow) return res.status(404).json({ message: "User not found" });
+
+        const isFollowing = userToFollow.followers.includes(currentUser._id);
+
+        if (isFollowing) {
+            userToFollow.followers.pull(currentUser._id);
+        } else {
+            userToFollow.followers.push(currentUser._id);
+        }
+
+        await userToFollow.save();
+        res.json({ message: isFollowing ? "Unfollowed" : "Followed" });
+    } catch (err) {
+        res.status(500).json({ message: err.message });
+    }
+});
+
+router.post("/:id/rate", async (req, res) => {
+    try {
+        const { rating } = req.body;
+        const userToRate = await User.findById(req.params.id);
+
+        if (!userToRate) return res.status(404).json({ message: "User not found" });
+
+        userToRate.ratings.push({ stars: rating });
+        await userToRate.save();
+
+        res.json({ message: "Rating saved successfully" });
+    } catch (err) {
+        res.status(500).json({ message: err.message });
+    }
+});
+
 
 module.exports = router;
