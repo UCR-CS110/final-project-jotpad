@@ -22,7 +22,13 @@ export default function StoryEditor() {
         setError(null);
         setLoading(true);
 
+        const user = await fetch("http://localhost:5000/api/users/me", {
+            credentials: 'include'
+        });
+        const author = await user.json();
+
         const payload = {
+            author,
             title,
             content,
             tags: tagsInput.split(",").map(t => t.trim()).filter(Boolean),
@@ -31,11 +37,15 @@ export default function StoryEditor() {
         };
 
         try {
+            const token = localStorage.getItem("token");
             const res = await fetch("/api/stories", {
                 method: "POST",
-                credentials: "include",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(payload),
+                credentials: 'include',
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${token}`
+                },
+                body: JSON.stringify(payload)
             });
 
             if (!res.ok) {
@@ -43,7 +53,7 @@ export default function StoryEditor() {
                 throw new Error(body.message || "Failed to post story");
             }
 
-            await res.json();
+            const data = await res.json();
             setTitle("");
             setContent("");
             setTagsInput("");
@@ -89,7 +99,7 @@ export default function StoryEditor() {
 
                 <div className="se-row">
                     <label className="se-select-label" style={{ marginLeft: "0px" }}>
-                        Status
+                        
                         <select
                             value={status}
                             onChange={(e) => setStatus(e.target.value)}

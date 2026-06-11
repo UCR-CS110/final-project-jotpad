@@ -2,26 +2,72 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './Drafts.css'
 
-function Draft({draft}) {
-    const [title, setTitle] = useState(draft.title);
-    const [content, setContent] = useState(draft.content);
-    const [tagsInput, setTagsInput] = useState((draft.tags).toString());
-    const [status, setStatus] = useState(draft.status);
-    const [wordCount, setWordCount] = useState(draft.wordCount);
-    const [loading, setLoading] = useState(false);
+export default function Drafts() {
+    const [selectedDraft, setSelectedDraft] = useState(null);
+    const [drafts, setDrafts] = useState(null);
+    const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const navigate = useNavigate();
+
+    // Form state
+    const [title, setTitle] = useState('');
+    const [content, setContent] = useState('');
+    const [tagsInput, setTagsInput] = useState('');
+    const [status, setStatus] = useState('draft');
+    const [wordCount, setWordCount] = useState(0);
+    const [formLoading, setFormLoading] = useState(false);
+    const [formError, setFormError] = useState(null);
     const [remove, setRemove] = useState(false);
 
+    // Fetch drafts on mount
+    useEffect(() => {
+        async function fetchDrafts() {
+            try {
+                const res = await fetch("http://localhost:5000/api/stories/drafts", {
+                    credentials: 'include',
+                });
+
+                if (!res.ok) {
+                    throw new Error("Failed to fetch drafts");
+                }
+
+                const drafts = await res.json();
+                setDrafts(drafts);
+                if (drafts.length > 0) setSelectedDraft(drafts[0]);
+            } catch (err) {
+                setError(err.message);
+            } finally {
+                setLoading(false);
+            }
+        }
+
+        fetchDrafts();
+    }, []);
+
+    // Sync form state when selectedDraft changes
+    useEffect(() => {
+        if (selectedDraft) {
+            setTitle(selectedDraft.title);
+            setContent(selectedDraft.content);
+            setTagsInput((selectedDraft.tags).toString());
+            setStatus(selectedDraft.status);
+            setWordCount(selectedDraft.wordCount);
+            setFormError(null);
+            setRemove(false);
+        }
+    }, [selectedDraft]);
+
+    // Update word count when content changes
     useEffect(() => {
         const wc = content.trim() ? content.trim().split(/\s+/).length : 0;
         setWordCount(wc);
     }, [content]);
 
-    async function editDraft(e) {
+    // Handle form submission
+    async function handleEditDraft(e) {
         e.preventDefault();
-        setError(null);
-        setLoading(true);
-        
+        setFormError(null);
+        setFormLoading(true);
 
         try {
             const me = await fetch("http://localhost:5000/api/users/me", {
@@ -38,7 +84,7 @@ function Draft({draft}) {
                 wordCount,
             };
 
-            const res = await fetch("http://localhost:5000/api/stories/" + draft._id, {
+            const res = await fetch("http://localhost:5000/api/stories/" + selectedDraft._id, {
                 method: "PUT",
                 credentials: 'include',
                 headers: {
@@ -53,96 +99,11 @@ function Draft({draft}) {
             }
 
         } catch (err) {
-            setError(err.message);
+            setFormError(err.message);
         } finally {
-            setLoading(false);
+            setFormLoading(false);
         }
     }
-
-    if (remove) return (<></>);
-
-    return (
-        <form className="se-form" onSubmit={editDraft}>
-                <label className="se-label">Title</label>
-                <input
-                    className="se-input"
-                    value={title}
-                    onChange={(e) => setTitle(e.target.value)}
-                    required
-                />
-
-                <label className="se-label">Content</label>
-                <textarea
-                    className="se-textarea"
-                    value={content}
-                    onChange={(e) => setContent(e.target.value)}
-                    rows={14}
-                    required
-                />
-                <div className="se-meta">{wordCount} words</div>
-
-                <label className="se-label">Tags</label>
-                <input
-                    className="se-input"
-                    value={tagsInput}
-                    onChange={(e) => setTagsInput(e.target.value)}
-                />
-
-                <div className="se-row">
-                    <label className="se-select-label">
-                        Status
-                        <select
-                            value={status}
-                            onChange={(e) => setStatus(e.target.value)}
-                            className="se-select"
-                        >
-                            {draft.status == "draft" ? <option value="draft">Draft</option> : <></>}
-                            {draft.status == "in_review" ? <option value="in_review">In Review</option> : <></>}
-                            <option value="public">Public</option>
-                        </select>
-                    </label>
-                </div>
-
-                {error && <div className="se-error">{error}</div>}
-
-                <button className="se-button" type="submit" disabled={loading}>
-                    {loading ? "Posting…" : "Edit Story"}
-                </button>
-            </form>
-    );
-}
-
-export default function Drafts({}) {
-    const [drafts, setDrafts] = useState(null);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
-    
-    const navigate = useNavigate();
-
-    useEffect(() => {
-        async function fetchDrafts() {
-          try {
-            const res = await fetch("http://localhost:5000/api/stories/drafts", {
-                credentials: 'include',
-            });
-
-            if (!res.ok) {
-              throw new Error("Failed to fetch drafts");
-            }
-
-            const drafts = await res.json();
-        
-            setDrafts(drafts);
-          } catch (err) {
-            setError(err.message);
-          } finally {
-            setLoading(false);
-          }
-        }
-    
-        fetchDrafts();
-    }, []);
-
 
     if (loading) {
         return <div style={{ padding: "20px" }}>Loading drafts...</div>;
@@ -156,19 +117,77 @@ export default function Drafts({}) {
         return <div style={{ padding: "20px" }}>There are no drafts currently.</div>;
     }
 
+    if (remove) {
+        return <div style={{ padding: "20px" }}>Draft published! Redirecting...</div>;
+    }
 
     return (
-        <div>
-            <br />
-            <button style={{ fontSize: '18px', borderRadius: '10px', backgroundColor: '#82cad2', border: '1px solid gray', padding: '10px 18px' }} onClick={() => navigate("/dashboard")}>Back</button>
-            <br /> <br />
-            {drafts.map((curDraft) => (
-                <>
-                <Draft draft={curDraft} />
-                <br />
-                </>
-            ))}
-        </div>
-    )
+        <div className="drafts-page">
+            <aside className="drafts-sidebar">
+                <h3>My Drafts</h3>
+                {drafts.map((draft) => (
+                    <button
+                        key={draft._id}
+                        className={draft._id === selectedDraft?._id ? "draft-tab active" : "draft-tab"}
+                        onClick={() => setSelectedDraft(draft)}
+                    >
+                        {draft.title || "Untitled"}
+                    </button>
+                ))}
+            </aside>
 
+            <main className="drafts-editor">
+                {selectedDraft ? (
+                    <form className="se-form" onSubmit={handleEditDraft}>
+                        <label className="se-label">Title</label>
+                        <input
+                            className="se-input"
+                            value={title}
+                            onChange={(e) => setTitle(e.target.value)}
+                            required
+                        />
+
+                        <label className="se-label">Content</label>
+                        <textarea
+                            className="se-textarea"
+                            value={content}
+                            onChange={(e) => setContent(e.target.value)}
+                            rows={14}
+                            required
+                        />
+                        <div className="se-meta">{wordCount} words</div>
+
+                        <label className="se-label">Tags</label>
+                        <input
+                            className="se-input"
+                            value={tagsInput}
+                            onChange={(e) => setTagsInput(e.target.value)}
+                        />
+
+                        <div className="se-row">
+                            <label style={{marginLeft: "0px"}} className="se-select-label">
+                                <select
+                                    value={status}
+                                    onChange={(e) => setStatus(e.target.value)}
+                                    className="se-select"
+                                >
+                                    {selectedDraft.status == "draft" ? <option value="draft">Draft</option> : <></>}
+                                    {selectedDraft.status == "in_review" ? <option value="in_review">In Review</option> : <></>}
+                                    <option value="public">Public</option>
+                                </select>
+                            </label>
+                        </div>
+
+                        {formError && <div className="se-error">{formError}</div>}
+
+                        <button className="se-button" type="submit" disabled={formLoading}>
+                            {formLoading ? "Saving…" : "Edit Story"}
+                        </button>
+                    </form>
+                ) : (
+                    <div>Select a draft to edit.</div>
+                )}
+            </main>
+        </div>
+    );
 }
