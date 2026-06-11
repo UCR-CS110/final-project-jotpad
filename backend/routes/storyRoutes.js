@@ -35,4 +35,7 @@ router.put("/:id", updateStory);
 router.delete("/:id", deleteStory);
 router.post("/requests/:id", postAsRequest);
 
+const { auth } = require("../middleware/auth.js");
+router.post("/", auth, createStory);
+
 module.exports = router;

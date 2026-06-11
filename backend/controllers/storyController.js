@@ -8,7 +8,7 @@ function getUserIdFromReq(req) {
 
 async function createStory(req, res) {
     try {
-        console.log("Anonymous story submission");
+        console.log("Story submission");
 
         const story = await Story.create({
             author: req.body.author,

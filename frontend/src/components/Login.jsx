@@ -12,22 +12,30 @@ function Login() {
 
   const navigate = useNavigate();
 
-  const handleSubmit = async(e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     //Login view
     if (isLoginView) {
-      try{
-        const response = await fetch('http://localhost:5000/api/login/login', {
-            method: 'POST',
-            credentials: 'include',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ username: email, password: password }), 
-          });
-          
-        const data = await response.json();
+      try {
+        const response = await fetch('/api/login/login', {
+          method: 'POST',
+          credentials: 'include',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email, password }),
+        });
+
+        const text = await response.text();
+        if (!response.ok) {
+          console.error("Login failed response:", text);
+          const data = text && text.startsWith("{") ? JSON.parse(text) : null;
+          alert(`Login failed: ${data?.message || response.statusText}`);
+          return;
+        }
+
+        const data = JSON.parse(text);
+        localStorage.setItem('token', data.token);
+        navigate('/dashboard');
 
         if (response.ok) {
           localStorage.setItem('token', data.token);
@@ -48,7 +56,7 @@ function Login() {
           method: 'POST',
           credentials: 'include',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ username, email, password }), 
+          body: JSON.stringify({ username, email, password }),
         });
 
         const data = await response.json();

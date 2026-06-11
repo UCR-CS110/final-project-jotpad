@@ -2,8 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 
 export default function StoryView() {
-    const { id } = useParams(); 
-    
+    const { id } = useParams();
+
     const [story, setStory] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -17,16 +17,15 @@ export default function StoryView() {
         const fetchStory = async () => {
             try {
                 // Ask the server for the story with this ID
-                // (provisional URL, we will change it later)
                 const response = await fetch(`http://localhost:5000/api/stories/${id}`);
-                
+
                 if (!response.ok) {
                     throw new Error("Could not find this story.");
                 }
-                
+
                 const data = await response.json();
                 setStory(data);
-                
+
             } catch (err) {
                 setError(err.message);
             } finally {
@@ -44,24 +43,26 @@ export default function StoryView() {
         setFeedbackStatus(null);
 
         try {
-            const token = localStorage.getItem("token");
-
-            const response = await fetch(`http://localhost:5000/api/stories/${id}/feedback`, {
+            const response = await fetch("/api/feedback", {
                 method: "POST",
+                credentials: "include",
                 headers: {
                     "Content-Type": "application/json",
-                    "Authorization": `Bearer ${token}`
                 },
-                body: JSON.stringify({ text: feedbackText })
+                body: JSON.stringify({
+                    storyId: id,
+                    content: feedbackText,
+                }),
             });
 
             if (!response.ok) {
-                throw new Error("Failed to submit feedback. Please try again.");
+                const body = await response.text();
+                throw new Error(body ? body : "Failed to submit feedback. Please try again.");
             }
 
             setFeedbackStatus("success");
-            setFeedbackText("");
             
+            setFeedbackText("");
         } catch (err) {
             setFeedbackStatus(err.message);
         } finally {
@@ -70,9 +71,9 @@ export default function StoryView() {
     };
 
     if (loading) return <div style={{ textAlign: 'center', marginTop: '50px' }}> Loading story... </div>;
-    
+
     if (error) return <div style={{ textAlign: 'center', color: 'red', marginTop: '50px' }}>Error: {error}</div>;
-    
+
     if (!story) return <div>Story not found.</div>;
 
     return (
@@ -80,7 +81,7 @@ export default function StoryView() {
             <h1 style={{ fontSize: '2.5rem', marginBottom: '10px' }}>{story.title}</h1>
             <p style={{ color: 'gray', fontStyle: 'italic' }}>Words: {story.wordCount || "Desconocido"}</p>
             <hr style={{ margin: '20px 0' }} />
-            
+
             <div style={{ whiteSpace: 'pre-wrap', fontSize: '1.2rem', lineHeight: '1.8' }}>
                 {story.content}
             </div>
@@ -90,9 +91,9 @@ export default function StoryView() {
             <div style={{ backgroundColor: '#fff', padding: '20px', borderRadius: '8px', boxShadow: '0 2px 5px rgba(0,0,0,0.1)' }}>
                 <h2 style={{ marginTop: '0' }}>Leave Feedback & Earn Credit</h2>
                 <p style={{ color: '#555', marginBottom: '15px' }}>Help the author improve by leaving constructive feedback. You will earn 1 credit for your review!</p>
-                
+
                 <form onSubmit={handleFeedbackSubmit}>
-                    <textarea 
+                    <textarea
                         value={feedbackText}
                         onChange={(e) => setFeedbackText(e.target.value)}
                         placeholder="Write your feedback here..."
@@ -100,17 +101,17 @@ export default function StoryView() {
                         required
                         style={{ width: '100%', padding: '10px', fontSize: '1rem', borderRadius: '4px', border: '1px solid #ccc', marginBottom: '15px' }}
                     />
-                    
-                    <button 
-                        type="submit" 
+
+                    <button
+                        type="submit"
                         disabled={isSubmitting || feedbackText.trim() === ""}
-                        style={{ 
-                            backgroundColor: isSubmitting ? '#999' : '#28a745', 
-                            color: 'white', 
-                            padding: '10px 20px', 
-                            border: 'none', 
-                            borderRadius: '4px', 
-                            fontSize: '1rem', 
+                        style={{
+                            backgroundColor: isSubmitting ? '#999' : '#28a745',
+                            color: 'white',
+                            padding: '10px 20px',
+                            border: 'none',
+                            borderRadius: '4px',
+                            fontSize: '1rem',
                             cursor: isSubmitting ? 'not-allowed' : 'pointer',
                             fontWeight: 'bold'
                         }}
