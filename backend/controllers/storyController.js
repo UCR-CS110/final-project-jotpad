@@ -8,11 +8,10 @@ function getUserIdFromReq(req) {
 
 async function createStory(req, res) {
     try {
-        const authorId = getUserIdFromReq(req);
-        if (!authorId) return res.status(401).json({ message: "Not authenticated" });
+        console.log("Story submission");
 
         const story = await Story.create({
-            author: authorId,
+            author: req.body.author,
             title: req.body.title,
             content: req.body.content,
             tags: req.body.tags || [],
@@ -97,7 +96,7 @@ async function getDrafts(req, res) {
         //const user = await fetch("http://localhost:5000/api/users/me");
         //const userData = await user.json();
         const userData = await User.findById(req.user._id);
-        const query = { status: { $in: ["draft", "in_review"] }, author: userData };
+        const query = { status: {$in: ["draft", "in_review"]}, author: userData };
         const drafts = await Story.find(query);
         res.json(drafts);
     } catch (error) {
@@ -121,7 +120,7 @@ async function postAsRequest(req, res) {
             vetting: req.body.vetting
         });
 
-        await Story.findByIdAndUpdate(req.body.id, { status: "in_review" });
+        await Story.findByIdAndUpdate(req.body.id, {status: "in_review"});
 
         res.status(201).json(request);
 
@@ -167,12 +166,12 @@ async function postRating(req, res) {
             story.numRatings = 1;
             story.avgRating = req.body.rating;
         } else {
-            story.avgRating = ((story.avgRating * story.numRatings) + req.body.rating) / (story.numRatings + 1);
+            story.avgRating = ((story.avgRating*story.numRatings) + req.body.rating)/(story.numRatings+1);
             story.numRatings++;
         }
         await story.save();
         const user = await User.findById(req.user._id);
-        user.ratings.push({ story: story._id, stars: req.body.rating });
+        user.ratings.push({story: story._id, stars: req.body.rating});
         await user.save();
         res.json({ message: "Successfully posted rating" });
     } catch (error) {
@@ -193,7 +192,7 @@ async function putRating(req, res) {
             }
         });
         await user.save();
-        story.avgRating = ((story.avgRating * story.numRatings) - prevRating + req.body.rating) / (story.numRatings);
+        story.avgRating = ((story.avgRating*story.numRatings) - prevRating + req.body.rating)/(story.numRatings);
         await story.save();
         res.json({ message: "Successfully changed rating" });
     } catch (error) {
@@ -213,9 +212,9 @@ async function getUserRating(req, res) {
             }
         });
         if (!curRating) {
-            res.json({ 'stars': 'none' });
+            res.json({'stars': 'none'});
         } else {
-            res.json({ 'stars': curRating });
+            res.json({'stars': curRating});
         }
     } catch (error) {
         res.status(500).json({ message: error.message });
