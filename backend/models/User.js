@@ -21,18 +21,29 @@ const userSchema = new mongoose.Schema({
   pfpLink: String,
   bannerLink: String,
 
-  inbox: [ {subject: { type: String, required: true },
-  text: { type: String },
-  date: { type: String },
-  type: { type: String, required: true },
-  link: { type: String }, 
-  accepted: {type: Boolean },
-  story: { type: mongoose.Schema.Types.ObjectId, ref: "Story" },
-  beta_request: { type: mongoose.Schema.Types.ObjectId, ref: "BetaRequest" },
-  sender: { type: mongoose.Schema.Types.ObjectId, ref: "User" } } ],
+  inbox: [{
+    subject: { type: String, required: true },
+    text: { type: String },
+    date: { type: String },
+    type: { type: String, required: true },
+    link: { type: String },
+    accepted: { type: Boolean },
+    story: { type: mongoose.Schema.Types.ObjectId, ref: "Story" },
+    beta_request: { type: mongoose.Schema.Types.ObjectId, ref: "BetaRequest" },
+    sender: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
+    feedback: { type: mongoose.Schema.Types.ObjectId, ref: "Feedback" }
+  }],
 
-  ratings: [ { story: { type: mongoose.Schema.Types.ObjectId, ref: "Story" }, stars: { type: Number } }]
-
+  ratings: [{ story: { type: mongoose.Schema.Types.ObjectId, ref: "Story" }, stars: { type: Number } }],
+  
+  feedbackRatings: [
+    {
+      feedback: { type: mongoose.Schema.Types.ObjectId, ref: "Feedback" },
+      stars: { type: Number, min: 1, max: 5 },
+      reviewer: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
+      createdAt: { type: Date, default: Date.now }
+    }
+  ],
 }, { timestamps: true });
 
 module.exports = mongoose.model("User", userSchema);
