@@ -104,9 +104,9 @@ export default function Profile() {
                             : 0
                     );
 
-                    if (profileData.isFollowedByMe) {
+                    /*if (profileData.followers.include(profile)) {
                         setIsFollowing(true);
-                    }
+                    }*/
                 };
 
                 if (data.username === params.username) {
@@ -157,6 +157,10 @@ export default function Profile() {
                     if (data2.bannerLink) setBannerLink(data2.bannerLink);
 
                     setIsMe(false);
+
+                    if (data2.followers.includes(data._id)) {
+                        setIsFollowing(true);
+                    }
 
                     loadSocialData(data2);
                 }

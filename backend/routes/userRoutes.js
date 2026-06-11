@@ -119,11 +119,14 @@ router.post("/:id/follow",async (req, res) => {
 
     if (isFollowing) {
       userToFollow.followers.pull(currentUser._id);
+      currentUser.following.pull(userToFollow._id);
     } else {
       userToFollow.followers.push(currentUser._id);
+      currentUser.following.push(userToFollow._id);
     }
 
     await userToFollow.save();
+    await currentUser.save();
     res.json({ message: isFollowing ? "Unfollowed" : "Followed" });
     
   } catch (err) {
