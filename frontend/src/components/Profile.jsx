@@ -208,7 +208,7 @@ export default function Profile() {
                         sum += work.avgRating;
                     }
                 });
-                if (data.length > 0) setAvgStoryRating(Math.round((sum/numRated)*100)/100);
+                if (numRated > 0) setAvgStoryRating(Math.round((sum/numRated)*100)/100);
 
             } catch (err) {
 
