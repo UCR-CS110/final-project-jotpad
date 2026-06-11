@@ -1,13 +1,11 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import './Login.css';
 
 function Login() {
-  // Store the user input
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [username, setUsername] = useState('');
-
-  // true = Login view, false = Sign Up view
   const [isLoginView, setIsLoginView] = useState(true);
 
   const navigate = useNavigate();
@@ -39,7 +37,6 @@ function Login() {
 
         if (response.ok) {
           localStorage.setItem('token', data.token);
-
           alert('Login successful!');
           navigate('/dashboard');
         } else {
@@ -78,59 +75,64 @@ function Login() {
   };
 
   return (
-    <div style={{ padding: '20px' }}>
-      <h1 style={{ fontSize: '50px' }}>Welcome to Jotpad</h1>
+    <div className="login-page">
+      <div className="login-card">
+        <h1 className="login-title">Welcome to Jotpad</h1>
 
-      {/* Text based on the current view */}
-      <p style={{ fontSize: '25px' }}>{isLoginView ? 'Log in to review stories and earn credits.' : 'Create an account to join the community and share your stories.'}</p>
+        <p className="login-subtitle">
+          {isLoginView ? 'Log in to review stories and earn credits.' : 'Create an account to join the community and share your stories.'}
+        </p>
 
-      <form onSubmit={handleSubmit}>
-        <input
-          type="email"
-          placeholder="Email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          style={{ display: 'block', margin: '15px 0', padding: '5px', borderRadius: '10px', fontSize: '20px' }}
-          required
-        />
-        {isLoginView ? <></> : 
-        <input
-          type="username"
-          placeholder="Username"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-          style={{ display: 'block', margin: '15px 0', padding: '5px', borderRadius: '10px', fontSize: '20px' }}
-          required
-        />
-        }
-        <input
-          type="password"
-          placeholder="Password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          style={{ display: 'block', margin: '15px 0', padding: '5px', borderRadius: '10px', fontSize: '20px' }}
-          required
-        />
-        <button type="submit" style={{ padding: '5px 15px', cursor: 'pointer', fontSize: '20px', borderRadius: '15px', backgroundColor: '#c0f1a7', marginTop: '10px' }}>
-          {isLoginView ? 'Login' : 'Sign Up'}
+        <form onSubmit={handleSubmit}>
+          <input
+            type="email"
+            placeholder="Email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            className="login-input"
+            required
+          />
+          {!isLoginView && (
+            <input
+              type="text"
+              placeholder="Username"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              className="login-input"
+              required
+            />
+          )}
+          <input
+            type="password"
+            placeholder="Password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            className="login-input"
+            required
+          />
+          <button type="submit" className="login-btn">
+            {isLoginView ? 'Login' : 'Sign Up'}
+          </button>
+        </form>
+
+        <p style={{ marginTop: '30px', fontSize: '16px', color: '#555' }}>
+          {isLoginView ? "Don't have an account? " : "Already have an account? "}
+          <button type="button" onClick={() => setIsLoginView(!isLoginView)} className="toggle-btn">
+            {isLoginView ? 'Sign up here' : 'Log in here'}
+          </button>
+        </p>
+
+        <div className="divider">
+          <div className="divider-line"></div>
+          <span className="divider-text">OR</span>
+          <div className="divider-line"></div>
+        </div>
+
+        <button type="button" onClick={() => alert("Google sign-in coming soon!")} className="google-btn">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg" alt="Google logo" style={{ width: '18px', height: '18px' }} />
+          Sign in with Google
         </button>
-      </form>
-
-      <p style={{ marginTop: '30px', fontSize: '20px' }}>
-        {isLoginView ? "Don't have an account? " : "Already have an account? "}
-        <button
-          type="button"
-          onClick={() => setIsLoginView(!isLoginView)}
-          style={{ background: 'none', border: 'none', color: 'blue', cursor: 'pointer', textDecoration: 'underline', fontSize: '20px' }}
-        >
-          {isLoginView ? 'Sign up here' : 'Log in here'}
-        </button>
-      </p>
-
-      <hr style={{ margin: '20px 0' }} />
-      <button type="button" onClick={() => alert("Google sign-in coming soon!")}>
-        Sign in with Google
-      </button>
+      </div>
     </div>
   );
 }
