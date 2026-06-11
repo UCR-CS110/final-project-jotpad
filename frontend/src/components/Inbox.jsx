@@ -2,6 +2,17 @@ import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import "./Inbox.css"
 
+function formatMessageDate(dateString) {
+    return new Date(dateString).toLocaleString("en-US", {
+        month: "short",
+        day: "numeric",
+        year: "numeric",
+        hour: "2-digit",
+        minute: "2-digit",
+        hour12: true,
+    });
+}
+
 function FullMessage({ message, setMessage, accepted }) {
     const [error, setError] = useState(null);
 
@@ -9,16 +20,7 @@ function FullMessage({ message, setMessage, accepted }) {
     const [ratingSubmitted, setRatingSubmitted] = useState(false);
     const [isSubmittingRating, setIsSubmittingRating] = useState(false);
 
-    function formatMessageDate(dateString) {
-        return new Date(dateString).toLocaleString("en-US", {
-            month: "short",
-            day: "numeric",
-            year: "numeric",
-            hour: "2-digit",
-            minute: "2-digit",
-            hour12: true,
-        });
-    }
+
 
     async function sendAcceptMessage() {
         try {
@@ -223,15 +225,17 @@ export default function Inbox({ }) {
 
             {inbox.length == 0 ? <div style={{ padding: "20px" }}>There are no messages currently.</div> : <></>}
             <div className="inbox-all">
-                <div className="inbox-blurbs">{inbox.map((message) => (
-                    <div key={message._id} className="inbox-message" onClick={() => { setCurrentMessage(message); }}>
-                        <h2 style={{ paddingLeft: '10px' }}>{message.subject}</h2>
-                        <p style={{ paddingLeft: '10px' }}>Admin</p>
-                        <p style={{ paddingLeft: '10px' }}>Sent: {(message.date)}</p>
-                        <br />
-                        <p style={{ paddingLeft: '10px' }}>{message.text}</p>
-                    </div>
-                ))}
+                <div className="inbox-blurbs">{[...inbox]
+                    .sort((a, b) => new Date(b.date) - new Date(a.date))
+                    .map((message) => (
+                        <div key={message._id} className="inbox-message" onClick={() => { setCurrentMessage(message); }}>
+                            <h2 style={{ paddingLeft: '10px' }}>{message.subject}</h2>
+                            <p style={{ paddingLeft: '10px' }}>Admin</p>
+                            <p style={{ paddingLeft: '10px' }}>Sent: {formatMessageDate(message.date)}</p>
+                            <br />
+                            <p style={{ paddingLeft: '10px' }}>{message.text}</p>
+                        </div>
+                    ))}
                 </div>
 
                 <div className="full-message-display">

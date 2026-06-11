@@ -35,12 +35,23 @@ const userSchema = new mongoose.Schema({
   }],
 
   ratings: [{ story: { type: mongoose.Schema.Types.ObjectId, ref: "Story" }, stars: { type: Number } }],
-  
+
   feedbackRatings: [
     {
       feedback: { type: mongoose.Schema.Types.ObjectId, ref: "Feedback" },
       stars: { type: Number, min: 1, max: 5 },
       reviewer: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
+      createdAt: { type: Date, default: Date.now }
+    }
+  ],
+  givenFeedback: [
+    {
+      feedback: { type: mongoose.Schema.Types.ObjectId, ref: "Feedback" },
+
+      story: { type: mongoose.Schema.Types.ObjectId, ref: "Story" },
+
+      author: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
+
       createdAt: { type: Date, default: Date.now }
     }
   ],

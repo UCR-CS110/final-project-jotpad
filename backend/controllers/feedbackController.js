@@ -16,6 +16,21 @@ async function createFeedback(req, res) {
             content,
             rating
         });
+        // records feedback into reviewers's own array and increases credits
+        await User.findByIdAndUpdate(
+            reviewer,
+            {
+                $inc: { credits: 1 },
+
+                $push: {
+                    givenFeedback: {
+                        feedback: feedback._id,
+                        story: story._id,
+                        author: story.author
+                    }
+                }
+            }
+        );
 
         // send an inbox message to the story author
         const author = await User.findById(story.author);
