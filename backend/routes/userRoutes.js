@@ -101,14 +101,21 @@ router.put("/me", async (req, res) => {
   }
 });
 
-router.post("/:id/follow", async (req, res) => {
+router.post("/:id/follow",async (req, res) => {
   try {
+    if (!req.user || !req.user._id) {
+        return res.status(401).json({ message: "Unauthorized: No user logged in" });
+    }
+
     const userToFollow = await User.findById(req.params.id);
     const currentUser = await User.findById(req.user._id);
 
     if (!userToFollow) return res.status(404).json({ message: "User not found" });
+    if (!currentUser) return res.status(404).json({ message: "Current user not found" });
 
-    const isFollowing = userToFollow.followers.includes(currentUser._id);
+    const isFollowing = userToFollow.followers.some(
+        followerId => followerId.toString() === currentUser._id.toString()
+    );
 
     if (isFollowing) {
       userToFollow.followers.pull(currentUser._id);
@@ -118,7 +125,9 @@ router.post("/:id/follow", async (req, res) => {
 
     await userToFollow.save();
     res.json({ message: isFollowing ? "Unfollowed" : "Followed" });
+    
   } catch (err) {
+    console.error("Error in the follow system:", err);
     res.status(500).json({ message: err.message });
   }
 });
