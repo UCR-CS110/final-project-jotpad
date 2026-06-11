@@ -20,7 +20,7 @@ async function createFeedback(req, res) {
         await User.findByIdAndUpdate(
             reviewer,
             {
-                $inc: { credits: 1 },
+                $inc: { credits: 2 },
 
                 $push: {
                     givenFeedback: {

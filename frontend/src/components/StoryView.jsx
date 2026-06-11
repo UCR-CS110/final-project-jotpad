@@ -90,7 +90,7 @@ export default function StoryView() {
 
             <div style={{ backgroundColor: '#fff', padding: '20px', borderRadius: '8px', boxShadow: '0 2px 5px rgba(0,0,0,0.1)' }}>
                 <h2 style={{ marginTop: '0' }}>Leave Feedback & Earn Credit</h2>
-                <p style={{ color: '#555', marginBottom: '15px' }}>Help the author improve by leaving constructive feedback. You will earn 1 credit for your review!</p>
+                <p style={{ color: '#555', marginBottom: '15px' }}>Help the author improve by leaving constructive feedback. You will earn 2 credits for your review!</p>
 
                 <form onSubmit={handleFeedbackSubmit}>
                     <textarea
@@ -116,13 +116,13 @@ export default function StoryView() {
                             fontWeight: 'bold'
                         }}
                     >
-                        {isSubmitting ? "Submitting..." : "Submit Feedback (+1 Credit)"}
+                        {isSubmitting ? "Submitting..." : "Submit Feedback (+2 Credits)"}
                     </button>
                 </form>
 
                 {feedbackStatus === "success" && (
                     <div style={{ marginTop: '15px', padding: '10px', backgroundColor: '#d4edda', color: '#155724', borderRadius: '4px' }}>
-                        Success! Your feedback has been sent to the author and you earned 1 credit!
+                        Success! Your feedback has been sent to the author and you earned 2 credits!
                     </div>
                 )}
                 {feedbackStatus !== "success" && feedbackStatus !== null && (

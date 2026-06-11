@@ -8,7 +8,7 @@ const userSchema = new mongoose.Schema({
 
   bio: String,
 
-  credits: { type: Number, default: 0 },
+  credits: { type: Number, default: 1 },
 
   role: {
     type: String,
