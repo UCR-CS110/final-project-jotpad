@@ -131,6 +131,7 @@ async function rateFeedback(req, res) {
                 const msg = authorUser.inbox.id(messageId);
                 if (msg) {
                     msg.accepted = true;
+                    msg.rating = stars;
                     await authorUser.save();
                 }
             }

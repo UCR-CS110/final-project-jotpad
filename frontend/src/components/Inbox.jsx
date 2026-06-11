@@ -13,7 +13,7 @@ function formatMessageDate(dateString) {
     });
 }
 
-function FullMessage({ message, setMessage, accepted }) {
+function FullMessage({ message, setMessage, accepted, reloadVal, reload}) {
     const [error, setError] = useState(null);
 
     const [rating, setRating] = useState(0);
@@ -66,6 +66,8 @@ function FullMessage({ message, setMessage, accepted }) {
                 throw new Error("Failed to send acceptance message");
             }
 
+            reload(!reloadVal);
+
         } catch (err) {
             setError(err.message);
         }
@@ -88,6 +90,7 @@ function FullMessage({ message, setMessage, accepted }) {
 
             setRating(selectedRating);
             setRatingSubmitted(true);
+            reload(!reloadVal);
         } catch (err) {
             setError(err.message);
         } finally {
@@ -99,19 +102,27 @@ function FullMessage({ message, setMessage, accepted }) {
         return <div style={{ padding: "20px", color: "red" }}>{error}</div>;
     }
 
-    let ratingSection = null;
-    if (message.type === "feedback") {
-        if (ratingSubmitted) {
-            ratingSection = (
-                <div style={{ marginTop: '20px', padding: '15px', backgroundColor: '#eef8eb', borderRadius: '5px', marginLeft: '10px', marginRight: '10px' }}>
+    return (
+        <div className="full-message">
+            <div className="subject-line-full">
+                <h2 style={{ paddingLeft: '10px' }}>{message.subject}</h2>
+                <button className="full-message-x" onClick={() => { setMessage(null) }}>X</button>
+            </div>
+            <p style={{ paddingLeft: '10px' }}>Admin</p>
+            <p style={{ paddingLeft: '10px' }}>Sent: {formatMessageDate(message.date)}</p>
+            <br />
+            <p style={{ paddingLeft: '10px', whiteSpace: 'pre-wrap' }}>{message.text}</p>
+            <Link to={message.link} style={{ color: 'red', textDecoration: 'none', paddingLeft: '10px' }}>{(message.type == "Request to beta read accepted") ? "View work" : (message.type == "feedback") ? "Visit story" : "Visit profile"}</Link>
+            <br /> <br />
+
+            {accepted && (message.type == "Request to beta-read") ? <button disabled style={{ marginLeft: '10px' }}>You have already accepted the request.</button> : (message.type == "Request to beta-read") ? <button onClick={() => sendAcceptMessage()} style={{ marginLeft: '10px' }} id="accept-request-button">Click here to accept the request.</button> : <></>}
+
+            {(message.type === "feedback") ? (ratingSubmitted || accepted) ? <div style={{ marginTop: '20px', padding: '15px', backgroundColor: '#eef8eb', borderRadius: '5px', marginLeft: '10px', marginRight: '10px' }}>
                     <p style={{ margin: 0, color: '#28a745', fontWeight: 'bold' }}>
-                        You rated this feedback {rating} out of 5 stars.
+                        You rated this feedback {(rating == 0) ? message.rating : rating} out of 5 stars.
                     </p>
                 </div>
-            );
-        } else {
-            ratingSection = (
-                <div style={{ marginTop: '20px', padding: '15px', border: '1px solid #ccc', borderRadius: '5px', backgroundColor: '#f9f9f9', marginLeft: '10px', marginRight: '10px' }}>
+            : <div style={{ marginTop: '20px', padding: '15px', border: '1px solid #ccc', borderRadius: '5px', backgroundColor: '#f9f9f9', marginLeft: '10px', marginRight: '10px' }}>
                     <h4 style={{ margin: '0 0 10px 0' }}>Rate this feedback:</h4>
                     <p style={{ fontSize: '0.9rem', color: '#666', marginBottom: '10px' }}>
                         Did you find this review helpful? Your rating will appear on the beta reader's public profile.
@@ -138,26 +149,7 @@ function FullMessage({ message, setMessage, accepted }) {
                     </div>
                     {isSubmittingRating && <span style={{ fontSize: '0.8rem', color: 'gray' }}>Saving...</span>}
                 </div>
-            );
-        }
-    }
-
-    return (
-        <div className="full-message">
-            <div className="subject-line-full">
-                <h2 style={{ paddingLeft: '10px' }}>{message.subject}</h2>
-                <button className="full-message-x" onClick={() => { setMessage(null) }}>X</button>
-            </div>
-            <p style={{ paddingLeft: '10px' }}>Admin</p>
-            <p style={{ paddingLeft: '10px' }}>Sent: {formatMessageDate(message.date)}</p>
-            <br />
-            <p style={{ paddingLeft: '10px', whiteSpace: 'pre-wrap' }}>{message.text}</p>
-            <Link to={message.link} style={{ color: 'red', textDecoration: 'none', paddingLeft: '10px' }}>{(message.type == "Request to beta read accepted") ? "View work" : (message.type == "feedback") ? "Visit story" : "Visit profile"}</Link>
-            <br /> <br />
-
-            {accepted && (message.type == "Request to beta-read") ? <button disabled style={{ marginLeft: '10px' }}>You have already accepted the request.</button> : (message.type == "Request to beta-read") ? <button onClick={() => sendAcceptMessage()} style={{ marginLeft: '10px' }} id="accept-request-button">Click here to accept the request.</button> : <></>}
-
-            {ratingSection}
+            : <></>}
         </div>
     );
 }
@@ -168,6 +160,7 @@ export default function Inbox({ }) {
     const [fullMessage, setFullMessage] = useState(null);
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(true);
+    const [reload, setReload] = useState(false);
 
     useEffect(() => {
         async function fetchInbox() {
@@ -192,12 +185,12 @@ export default function Inbox({ }) {
         }
 
         fetchInbox();
-    }, []);
+    }, [reload]);
 
     useEffect(() => {
         async function updateFullMessage() {
             if (currentMessage) {
-                setFullMessage(<FullMessage message={currentMessage} setMessage={setCurrentMessage} accepted={currentMessage.accepted} />);
+                setFullMessage(<FullMessage message={currentMessage} setMessage={setCurrentMessage} accepted={currentMessage.accepted} reloadVal={reload} reload={setReload} />);
             } else {
                 setFullMessage(null);
             }

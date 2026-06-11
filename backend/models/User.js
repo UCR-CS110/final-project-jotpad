@@ -30,6 +30,7 @@ const userSchema = new mongoose.Schema({
     type: { type: String, required: true },
     link: { type: String },
     accepted: { type: Boolean },
+    rating: { type: Number },
     story: { type: mongoose.Schema.Types.ObjectId, ref: "Story" },
     beta_request: { type: mongoose.Schema.Types.ObjectId, ref: "BetaRequest" },
     sender: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
