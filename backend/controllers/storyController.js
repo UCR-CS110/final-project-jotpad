@@ -61,13 +61,22 @@ async function updateStory(req, res) {
 
 async function deleteStory(req, res) {
     try {
-        const me = getUserIdFromReq(req);
+        const meId = getUserIdFromReq(req);
         const story = await Story.findById(req.params.id);
+        
         if (!story) return res.status(404).json({ message: "Story not found" });
-        if (String(story.author) !== String(me)) return res.status(403).json({ message: "Forbidden" });
+
+        const currentUser = await User.findById(meId);
+
+        const isAuthor = String(story.author) === String(meId);
+        const isAdmin = currentUser && currentUser.role === 'admin';
+
+        if (!isAuthor && !isAdmin) {
+            return res.status(403).json({ message: "Forbidden: You are not the author or an admin" });
+        }
 
         await story.deleteOne();
-        res.json({ message: "Story deleted" });
+        res.json({ message: "Story deleted successfully" });
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
@@ -249,6 +258,25 @@ async function listByAuthor(req, res) {
     }
 }
 
+async function getMetrics(req, res) {
+    try {
+        const totalUsers = await User.countDocuments();
+        const publishedStories = await Story.countDocuments({ status: "public" });
+        const storiesInReview = await Story.countDocuments({ status: "in_review" });
+
+        const activeBetaReaders = await User.countDocuments({ role: "beta_reader" });
+
+        res.json({
+            totalUsers,
+            publishedStories,
+            storiesInReview,
+            activeBetaReaders
+        });
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+}
+
 module.exports = {
     createStory,
     getStory,
@@ -264,4 +292,5 @@ module.exports = {
     getBetaRequests,
     getBetaRequest,
     listByAuthor,
+    getMetrics
 };

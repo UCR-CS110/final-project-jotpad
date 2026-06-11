@@ -16,6 +16,7 @@ const {
     getBetaRequests,
     getBetaRequest,
     listByAuthor,
+    getMetrics
 } = require("../controllers/storyController.js");
 
 const router = express.Router();
@@ -28,13 +29,13 @@ router.get("/rating/me/:id", getUserRating);
 router.post("/rating/:id", postRating);
 router.put("/rating/:id", putRating);
 router.get("/requests", getBetaRequests);
+router.get("/metrics", getMetrics);
 router.get("/author/:id", listByAuthor);
 router.get("/requests/:id", getBetaRequest);
 router.get("/:id", getStory);
 router.put("/:id", updateStory);
 router.delete("/:id", deleteStory);
 router.post("/requests/:id", postAsRequest);
-
 const { auth } = require("../middleware/auth.js");
 router.post("/", auth, createStory);
 
