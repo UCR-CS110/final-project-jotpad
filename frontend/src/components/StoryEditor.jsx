@@ -38,7 +38,7 @@ export default function StoryEditor() {
 
         try {
             const token = localStorage.getItem("token");
-            const res = await fetch("/api/stories", {
+            const res = await fetch("http://localhost:5000/api/stories", {
                 method: "POST",
                 credentials: 'include',
                 headers: {
@@ -53,7 +53,6 @@ export default function StoryEditor() {
                 throw new Error(body.message || "Failed to post story");
             }
 
-            const data = await res.json();
             setTitle("");
             setContent("");
             setTagsInput("");
@@ -72,34 +71,44 @@ export default function StoryEditor() {
             <h2 className="se-title">Write a Story</h2>
 
             <form className="se-form" onSubmit={handleSubmit}>
-                <label className="se-label">Title</label>
-                <input
-                    className="se-input"
-                    value={title}
-                    onChange={(e) => setTitle(e.target.value)}
-                    required
-                />
+                
+                <div>
+                    <label className="se-label">Title</label>
+                    <input
+                        className="se-input"
+                        value={title}
+                        onChange={(e) => setTitle(e.target.value)}
+                        placeholder="Give your story a title..."
+                        required
+                    />
+                </div>
 
-                <label className="se-label">Content</label>
-                <textarea
-                    className="se-textarea"
-                    value={content}
-                    onChange={(e) => setContent(e.target.value)}
-                    rows={14}
-                    required
-                />
-                <div className="se-meta">{wordCount} words</div>
+                <div>
+                    <label className="se-label">Content</label>
+                    <textarea
+                        className="se-textarea"
+                        value={content}
+                        onChange={(e) => setContent(e.target.value)}
+                        placeholder="Start typing your story here..."
+                        rows={16}
+                        required
+                    />
+                    <div className="se-meta">{wordCount} words</div>
+                </div>
 
-                <label className="se-label">Tags</label>
-                <input
-                    className="se-input"
-                    value={tagsInput}
-                    onChange={(e) => setTagsInput(e.target.value)}
-                />
+                <div className="se-bottom-row">
+                    <div className="se-tags-group">
+                        <label className="se-label">Tags</label>
+                        <input
+                            className="se-input"
+                            value={tagsInput}
+                            onChange={(e) => setTagsInput(e.target.value)}
+                            placeholder="e.g. fantasy, romance, dark"
+                        />
+                    </div>
 
-                <div className="se-row">
-                    <label className="se-select-label" style={{ marginLeft: "0px" }}>
-                        
+                    <div className="se-status-group">
+                        <label className="se-label">Status</label>
                         <select
                             value={status}
                             onChange={(e) => setStatus(e.target.value)}
@@ -108,7 +117,7 @@ export default function StoryEditor() {
                             <option value="draft">Draft</option>
                             <option value="public">Public</option>
                         </select>
-                    </label>
+                    </div>
                 </div>
 
                 {error && <div className="se-error">{error}</div>}

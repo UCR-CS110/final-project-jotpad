@@ -1,15 +1,115 @@
+/* --- App.css --- */
+
 #navbar {
-  font-size: 19px;
+  font-family: 'Segoe UI', Roboto, Helvetica, sans-serif;
+  background-color: #2c3e50;
+  color: white;
+  padding: 15px 30px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.15);
+}
+
+#navbar a {
+  color: #ecf0f1;
+  text-decoration: none;
+  margin-right: 25px;
+  font-size: 16px;
+  font-weight: 500;
+  transition: color 0.2s ease-in-out;
+}
+
+#navbar a:hover {
+  color: #3498db;
+}
+
+.search-all {
+  display: flex;
+  gap: 10px;
+  align-items: center;
 }
 
 #searchbar-all {
   font-size: 15px;
+  padding: 8px 16px;
+  border: 1px solid #34495e;
+  border-radius: 20px;
+  background-color: #1a252f;
+  color: white;
+  outline: none;
+  transition: all 0.3s ease;
+}
+
+#searchbar-all:focus {
+  border-color: #3498db;
+  background-color: #fff;
+  color: #333;
 }
 
 #search-button-all {
   font-size: 15px;
+  padding: 8px 18px;
+  background-color: #3498db;
+  color: white;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.2s ease;
 }
 
-.search-all {
-  justify-self: right;
+#search-button-all:hover {
+  background-color: #2980b9;
+}
+
+#navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 30px;
+}
+
+.nav-logo {
+  flex: 1;
+  display: flex;
+  justify-content: flex-start;
+}
+
+
+.nav-links {
+  flex: 2;
+  display: flex;
+  justify-content: center;
+  gap: 35px;
+}
+
+.nav-links a {
+  margin: 0 !important;
+}
+
+.nav-right-side {
+  flex: 1;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 20px;
+  white-space: nowrap;
+}
+
+.logo-jotpad {
+  font-size: 24px !important;
+  font-weight: 900 !important;
+  letter-spacing: 1px;
+  color: #fff !important;
+}
+
+.logout-btn {
+  color: #e74c3c !important; 
+  font-weight: bold;
+}
+
+.logout-btn:hover {
+  color: #c0392b !important;
 }

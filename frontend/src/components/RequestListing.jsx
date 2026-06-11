@@ -233,7 +233,7 @@ export default function RequestListing({ }) {
                     value={typeTag}
                     onChange={(e) => setTypeTag(e.target.value)}
                 />
-                <button style={{ fontSize: '15px', backgroundColor: '#d4a861', padding: '5px' }} onClick={() => addSearchTag()}>Add tag</button>
+                <button style={{ fontSize: '15px', backgroundColor: '#a3c9a8', padding: '6px 12px', border: '1px solid #8eb393', borderRadius: '4px', cursor: 'pointer' }} onClick={() => addSearchTag()}>Add tag</button>
             </div>
 
             <div style={{ justifySelf: 'center', fontSize: '15px', marginBottom: '20px' }}>
@@ -346,7 +346,7 @@ export default function RequestListing({ }) {
             {error && <p style={{ textAlign: 'center', color: 'red' }}>Error: {error}</p>}
 
 
-
+ 
 
 
         </div>
