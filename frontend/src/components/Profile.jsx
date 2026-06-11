@@ -47,6 +47,9 @@ export default function Profile() {
     const [works, setWorks] = useState([]);
     const [reviews, setReviews] = useState([]);
 
+    const [avgStoryRating, setAvgStoryRating] = useState(0);
+    const [avgFeedbackRating, setAvgFeedbackRating] = useState(0);
+
     const [bio, setBio] = useState('');
     const [editing, setEditing] = useState(false);
 
@@ -109,6 +112,13 @@ export default function Profile() {
                 if (data.username === params.username) {
 
                     setProfile(data);
+
+                    let sum = 0;
+                    data.feedbackRatings.forEach((rating) => {
+                        sum += rating.stars;
+                    });
+                    if (data.feedbackRatings.length > 0) setAvgFeedbackRating(Math.round((sum/data.feedbackRatings.length)*100)/100);
+
                     setBio(data.bio);
 
                     if (data.pfpLink) setPfpLink(data.pfpLink);
@@ -134,6 +144,13 @@ export default function Profile() {
                     const data2 = await res2.json();
 
                     setProfile(data2);
+
+                    let sum = 0;
+                    data2.feedbackRatings.forEach((rating) => {
+                        sum += rating.stars;
+                    });
+                    if (data2.feedbackRatings.length > 0) setAvgFeedbackRating(Math.round((sum/data2.feedbackRatings.length)*100)/100);
+
                     setBio(data2.bio);
 
                     if (data2.pfpLink) setPfpLink(data2.pfpLink);
@@ -178,6 +195,16 @@ export default function Profile() {
                 const data = await res.json();
 
                 setWorks(data);
+
+                let sum = 0;
+                let numRated = 0;
+                data.forEach((work) => {
+                    if (work.avgRating > 0) {
+                        numRated++;
+                        sum += work.avgRating;
+                    }
+                });
+                if (data.length > 0) setAvgStoryRating(Math.round((sum/numRated)*100)/100);
 
             } catch (err) {
 
@@ -399,7 +426,7 @@ export default function Profile() {
                 )}
 
                 <h3 id="profile-works-created">
-                    <strong>Works created:</strong> {works.length}
+                    <strong>Works created:</strong> {works.length} | <strong>Avg. Story Rating:</strong> {avgStoryRating == 0 ? "" : avgStoryRating} | <strong>Avg. Feedback Rating:</strong> {avgFeedbackRating == 0 ? "" : avgFeedbackRating}
                 </h3>
 
                 <div style={{ display: 'flex', gap: '20px', marginTop: '10px' }}>
@@ -566,22 +593,9 @@ export default function Profile() {
 
                                     <h2 className="profile-story-title">
 
-                                        <Link
-                                            to={"/discover/story/" + review.story._id}
-                                        >
-                                            {review.story.title}
-                                        </Link>
+                                        {review.story.title}
 
                                     </h2>
-
-                                    <div className="profile-story-rating">
-
-                                        <StarRating
-                                            rating={review.rating}
-                                            size="20px"
-                                        />
-
-                                    </div>
 
                                     <p className="profile-story-description">
                                         {review.content}

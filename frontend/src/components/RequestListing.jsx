@@ -112,6 +112,7 @@ export default function RequestListing({ }) {
 
                 const meData = await meRes.json();
                 setCurrentUser(meData);
+                setAdd(meData.credits >= 5);
 
             } catch (err) {
                 setError(err.message);
