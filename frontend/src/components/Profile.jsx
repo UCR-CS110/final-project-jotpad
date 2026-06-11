@@ -306,6 +306,7 @@ export default function Profile() {
                 `http://localhost:5000/api/users/${profile._id}/follow`,
                 {
                     method: "POST",
+                    credentials: 'include',
                     headers: {
                         "Content-Type": "application/json",
                         "Authorization": `Bearer ${token}`
