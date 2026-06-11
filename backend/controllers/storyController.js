@@ -141,6 +141,10 @@ async function postAsRequest(req, res) {
 
         await Story.findByIdAndUpdate(req.body.id, { status: "in_review" });
 
+        const user = await User.findById(req.user._id);
+        user.credits--;
+        await user.save();
+
         res.status(201).json(request);
 
     } catch (error) {
