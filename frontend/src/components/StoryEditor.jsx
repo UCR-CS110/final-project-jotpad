@@ -99,7 +99,7 @@ export default function StoryEditor() {
 
                 <div className="se-row">
                     <label className="se-select-label" style={{ marginLeft: "0px" }}>
-                        Status
+                        
                         <select
                             value={status}
                             onChange={(e) => setStatus(e.target.value)}

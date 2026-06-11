@@ -21,7 +21,6 @@ const {
 
 const router = express.Router();
 
-router.post("/", createStory);
 router.get("/public", listPublicStories);
 router.get("/in_review", listInReviewStories);
 router.get("/drafts", getDrafts);
