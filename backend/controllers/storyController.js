@@ -169,10 +169,7 @@ async function listInReviewStories(req, res) {
 
 async function getBetaRequests(req, res) {
     try {
-        const betaRequests = await BetaRequest.find({
-            author: { $ne: req.user._id }
-        });
-
+        const betaRequests = await BetaRequest.find();
         res.json(betaRequests);
     } catch (error) {
         res.status(500).json({ message: error.message });
