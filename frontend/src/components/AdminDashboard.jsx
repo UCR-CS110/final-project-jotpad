@@ -11,6 +11,32 @@ export default function AdminDashboard() {
     const [metrics, setMetrics] = useState(null);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
+    const [hasPermission, setHasPermission] = useState(false);
+
+    useEffect(() => {
+
+        async function fetchUser() {
+            try {
+
+                const res = await fetch(
+                    "http://localhost:5000/api/users/me",
+                    {
+                        credentials: 'include'
+                    }
+                );
+
+                if (!res.ok) {
+                    throw new Error("Failed to fetch user");
+                }
+
+                const data = await res.json();
+                setHasPermission(data.role == "admin");
+            } catch (err) {
+                console.log(err);
+            }
+        }
+        fetchUser();
+    }, []);
 
     useEffect(() => {
         async function fetchMetrics() {
@@ -80,6 +106,10 @@ export default function AdminDashboard() {
         }
         fetchStories();
     }, [activeTab]);
+
+    if (!hasPermission) {
+        return (<div style={{ fontSize: '20px', marginTop: '50px', justifySelf: 'center' }}>You do not have permission to view this page.</div>);
+    }
 
     async function handleBanUser(userId, username) {
         if (!window.confirm(`Are you sure you want to ban ${username}? This is irreversible.`)) return;

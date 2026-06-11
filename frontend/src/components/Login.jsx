@@ -33,12 +33,15 @@ function Login() {
 
         const data = JSON.parse(text);
         localStorage.setItem('token', data.token);
-        navigate('/dashboard');
 
         if (response.ok) {
           localStorage.setItem('token', data.token);
           alert('Login successful!');
-          navigate('/dashboard');
+          if (data.user.role == "admin") {
+            navigate("/admindashboard");
+          } else {
+            navigate("/dashboard");
+          }
         } else {
           alert(`Login failed: ${data.message}`);
         }

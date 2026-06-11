@@ -72,7 +72,7 @@ function Dashboard() {
     <div id="dashboard" style={{ padding: '20px' }}>
       <div className="dashboard-start">
         <div>
-          <h1>My Dashboard</h1>
+          <h1>My Dashboard {profile.role == "admin" ? <>/ <Link to={"/admindashboard"}>Admin Dashboard</Link></> : <></>}</h1>
           <div style={{ display: 'flex', gap: '20px' }}>
           <h2>Welcome, {profile.username}!</h2>
           <h2 style={{ color: 'green' }}>My Credits: {profile.credits}<span> 🪙</span></h2>
