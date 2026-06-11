@@ -17,7 +17,7 @@ function FullMessage({ message, setMessage, accepted }) {
     const [error, setError] = useState(null);
 
     const [rating, setRating] = useState(0);
-    const [ratingSubmitted, setRatingSubmitted] = useState(false);
+    const [ratingSubmitted, setRatingSubmitted] = useState(accepted);
     const [isSubmittingRating, setIsSubmittingRating] = useState(false);
 
 
@@ -103,7 +103,7 @@ function FullMessage({ message, setMessage, accepted }) {
     if (message.type === "feedback") {
         if (ratingSubmitted) {
             ratingSection = (
-                <div style={{ marginTop: '20px', padding: '15px', backgroundColor: '#eef8eb', borderRadius: '5px', marginLeft: '10px' }}>
+                <div style={{ marginTop: '20px', padding: '15px', backgroundColor: '#eef8eb', borderRadius: '5px', marginLeft: '10px', marginRight: '10px' }}>
                     <p style={{ margin: 0, color: '#28a745', fontWeight: 'bold' }}>
                         You rated this feedback {rating} out of 5 stars.
                     </p>
@@ -111,7 +111,7 @@ function FullMessage({ message, setMessage, accepted }) {
             );
         } else {
             ratingSection = (
-                <div style={{ marginTop: '20px', padding: '15px', border: '1px solid #ccc', borderRadius: '5px', backgroundColor: '#f9f9f9', marginLeft: '10px' }}>
+                <div style={{ marginTop: '20px', padding: '15px', border: '1px solid #ccc', borderRadius: '5px', backgroundColor: '#f9f9f9', marginLeft: '10px', marginRight: '10px' }}>
                     <h4 style={{ margin: '0 0 10px 0' }}>Rate this feedback:</h4>
                     <p style={{ fontSize: '0.9rem', color: '#666', marginBottom: '10px' }}>
                         Did you find this review helpful? Your rating will appear on the beta reader's public profile.
@@ -152,10 +152,10 @@ function FullMessage({ message, setMessage, accepted }) {
             <p style={{ paddingLeft: '10px' }}>Sent: {formatMessageDate(message.date)}</p>
             <br />
             <p style={{ paddingLeft: '10px', whiteSpace: 'pre-wrap' }}>{message.text}</p>
-            <Link to={message.link} style={{ color: 'red', textDecoration: 'none', paddingLeft: '10px' }}>{(message.type == "Request to beta read accepted") ? "View work" : "Visit profile"}</Link>
+            <Link to={message.link} style={{ color: 'red', textDecoration: 'none', paddingLeft: '10px' }}>{(message.type == "Request to beta read accepted") ? "View work" : (message.type == "feedback") ? "Visit story" : "Visit profile"}</Link>
             <br /> <br />
 
-            {accepted ? <button disabled style={{ marginLeft: '10px' }}>You have already accepted the request.</button> : (message.type == "Request to beta-read") ? <button onClick={() => sendAcceptMessage()} style={{ marginLeft: '10px' }} id="accept-request-button">Click here to accept the request.</button> : <></>}
+            {accepted && (message.type == "Request to beta-read") ? <button disabled style={{ marginLeft: '10px' }}>You have already accepted the request.</button> : (message.type == "Request to beta-read") ? <button onClick={() => sendAcceptMessage()} style={{ marginLeft: '10px' }} id="accept-request-button">Click here to accept the request.</button> : <></>}
 
             {ratingSection}
         </div>
