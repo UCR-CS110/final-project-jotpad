@@ -71,10 +71,10 @@ function Login() {
 
   return (
     <div style={{ padding: '20px' }}>
-      <h1>Welcome to Jotpad</h1>
+      <h1 style={{ fontSize: '50px' }}>Welcome to Jotpad</h1>
 
       {/* Text based on the current view */}
-      <p>{isLoginView ? 'Log in to review stories and earn credits.' : 'Create an account to join the community and share your stories.'}</p>
+      <p style={{ fontSize: '25px' }}>{isLoginView ? 'Log in to review stories and earn credits.' : 'Create an account to join the community and share your stories.'}</p>
 
       <form onSubmit={handleSubmit}>
         <input
@@ -82,7 +82,7 @@ function Login() {
           placeholder="Email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          style={{ display: 'block', margin: '10px 0', padding: '5px' }}
+          style={{ display: 'block', margin: '15px 0', padding: '5px', borderRadius: '10px', fontSize: '20px' }}
           required
         />
         {isLoginView ? <></> : 
@@ -91,7 +91,7 @@ function Login() {
           placeholder="Username"
           value={username}
           onChange={(e) => setUsername(e.target.value)}
-          style={{ display: 'block', margin: '10px 0', padding: '5px' }}
+          style={{ display: 'block', margin: '15px 0', padding: '5px', borderRadius: '10px', fontSize: '20px' }}
           required
         />
         }
@@ -100,20 +100,20 @@ function Login() {
           placeholder="Password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
-          style={{ display: 'block', margin: '10px 0', padding: '5px' }}
+          style={{ display: 'block', margin: '15px 0', padding: '5px', borderRadius: '10px', fontSize: '20px' }}
           required
         />
-        <button type="submit" style={{ padding: '5px 15px', cursor: 'pointer' }}>
+        <button type="submit" style={{ padding: '5px 15px', cursor: 'pointer', fontSize: '20px', borderRadius: '15px', backgroundColor: '#c0f1a7', marginTop: '10px' }}>
           {isLoginView ? 'Login' : 'Sign Up'}
         </button>
       </form>
 
-      <p style={{ marginTop: '15px' }}>
+      <p style={{ marginTop: '30px', fontSize: '20px' }}>
         {isLoginView ? "Don't have an account? " : "Already have an account? "}
         <button
           type="button"
           onClick={() => setIsLoginView(!isLoginView)}
-          style={{ background: 'none', border: 'none', color: 'blue', cursor: 'pointer', textDecoration: 'underline' }}
+          style={{ background: 'none', border: 'none', color: 'blue', cursor: 'pointer', textDecoration: 'underline', fontSize: '20px' }}
         >
           {isLoginView ? 'Sign up here' : 'Log in here'}
         </button>

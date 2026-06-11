@@ -73,9 +73,9 @@ function Dashboard() {
       <div className="dashboard-start">
         <div>
           <h1>My Dashboard</h1>
-          <div style={{ display: 'flex', gap: '10px' }}>
+          <div style={{ display: 'flex', gap: '20px' }}>
           <h2>Welcome, {profile.username}!</h2>
-          <h2 style={{ color: 'green' }}>My Credits: {profile.credits} 🪙</h2>
+          <h2 style={{ color: 'green' }}>My Credits: {profile.credits}<span> 🪙</span></h2>
           </div>
         </div>
         <div className="dashboard-dropdown">
@@ -99,7 +99,7 @@ function Dashboard() {
         {requests.map((request) => (
           <div className="dashboard-recommendation-story">
             <strong>{request.title}</strong> ({request.genre})
-            <button className="recommendation-story-button" style={{ marginLeft: '10px', fontSize: '18px', borderRadius: '10px', backgroundColor: '#e6d688', border: '1px solid gray', padding: '10px 18px' }} onClick={() => {navigate("/requests/"+request._id)}}>Review to earn 1 Credit</button>
+            <button className="recommendation-story-button" style={{ marginLeft: '10px', fontSize: '18px', borderRadius: '30px', backgroundColor: '#e6d688', border: '1px solid gray', padding: '10px 18px' }} onClick={() => {navigate("/requests/"+request._id)}}>Review to earn 1 Credit</button>
           </div>
         ))}
       </ul>

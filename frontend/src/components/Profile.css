@@ -60,6 +60,7 @@
     top: 380px;
     margin-left: 100%;
     justify-items: center;
+    border: 1px solid gray;
 }
 
 #profile-username {
@@ -81,18 +82,19 @@
     margin-bottom: 20px;
     font-family:'Gill Sans', 'Gill Sans MT', 'Trebuchet MS', sans-serif;
     font-size: 30px;
-    background-color: rgb(169, 174, 121);
+    background-color: rgb(205, 210, 154);
     width: 500px;
-    border-radius: 10%;
+    border-radius: 50px;
     align-self: center;
     text-align: center;
-    padding-top: 30px;
-    padding-bottom: 30px;
+    padding-top: 20px;
+    padding-bottom: 20px;
     justify-self: center;
+    border: 1px solid gray;
 }
 
 .profile-story {
-    background-color: rgb(205, 212, 189);
+    background-color: rgb(207, 214, 191);
     width: 1300px;
     margin-left: 5%;
     height: 150px;
@@ -100,6 +102,7 @@
     justify-self: center;
     display: flex;
     gap: 50px;
+    border: 1px solid gray;
 }
 
 .profile-story-cover {

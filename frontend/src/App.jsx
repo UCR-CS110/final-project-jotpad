@@ -12,6 +12,7 @@ import RequestDetails from './components/RequestDetails';
 import StoryEditor from './components/StoryEditor';
 import Drafts from './components/Drafts';
 import PublicStory from './components/PublicStory';
+import AdminDashboard from './components/AdminDashboard';
 import "./App.css"
 import StoryView from './components/StoryView';
 import './App.css';
@@ -25,6 +26,7 @@ function App() {
         <Route path="/" element={<Login />} />
         <Route path="/logout" element={<Logout />} />
         <Route element={<Layout />}>
+          <Route path="/admindashboard" element={<AdminDashboard />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/storyeditor" element={<StoryEditor />} />
           <Route path="/discover/story/:id" element={<PublicStory />}/>

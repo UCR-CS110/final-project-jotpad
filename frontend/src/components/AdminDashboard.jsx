@@ -17,6 +17,7 @@ export default function AdminDashboard() {
             try {
                 const token = localStorage.getItem("token");
                 const res = await fetch("http://localhost:5000/api/users", {
+                    credentials: 'include',
                     headers: { "Authorization": `Bearer ${token}` }
                 });
 

@@ -1,12 +1,13 @@
 .dashboard-start {
     display: flex;
-    gap: 80%;
+    gap: 75%;
 }
 
 .dashboard-pfp {
     border-radius: 50%;
     width: 100px;
     height: 100px;
+    justify-self: end;
 }
 
 .inbox-icon {
@@ -31,15 +32,16 @@
 .dashboard-recommendation-story {
     display: flex;
     justify-content: center;
-    background-color: rgb(213, 216, 198);
-    width: 900px;
-    border-radius: 10px;
+    background-color: rgb(210, 216, 184);
+    width: 800px;
+    border-radius: 5px;
     justify-self: center;
     align-content: center;
-    padding-top: 50px;
-    padding-bottom: 50px;
+    padding-top: 30px;
+    padding-bottom: 20px;
     display: flex;
     gap: 50px;
+    border: 1px solid gray;
 }
 
 .recommendation-story-button {

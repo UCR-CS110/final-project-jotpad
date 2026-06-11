@@ -178,7 +178,8 @@ export default function RequestListing({}) {
             <div className="requests-search">
                 <input 
                 type="text" 
-                id="beta-request-search" 
+                id="beta-request-search"
+                style={{ backgroundColor: '#e2f3e7', padding: '3px' }} 
                 placeholder="Search requests by name" 
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
@@ -189,7 +190,7 @@ export default function RequestListing({}) {
                 <input 
                 type="text" 
                 id="search-genre" 
-                style={{ fontSize: '15px' }}
+                style={{ fontSize: '15px', backgroundColor: '#e2f3e7', padding: '3px' }}
                 placeholder="Search by genre" 
                 value={searchGenre}
                 onChange={(e) => setSearchGenre(e.target.value)}
@@ -200,12 +201,12 @@ export default function RequestListing({}) {
                 <input 
                 type="text" 
                 id="filter-tags"
-                style={{ fontSize: '15px' }} 
+                style={{ fontSize: '15px', padding: '3px', backgroundColor: '#f7f3eb' }} 
                 placeholder="Type tags" 
                 value={typeTag}
                 onChange={(e) => setTypeTag(e.target.value)}
                 />
-                <button style={{ fontSize: '15px' }} onClick={() => addSearchTag()}>Add tag</button>
+                <button style={{ fontSize: '15px', backgroundColor: '#d4a861', padding: '5px' }} onClick={() => addSearchTag()}>Add tag</button>
             </div>
 
             <div style={{ justifySelf: 'center', fontSize: '15px', marginBottom: '20px' }}>

@@ -224,9 +224,9 @@ export default function Profile() {
             <div className="profile-edit-button">
                 {isMe ? (
                     !editing ? 
-                        <button style={{ fontSize: '15px', borderRadius: '10px', backgroundColor: '#82cad2', border: '1px solid #cfcfcf', padding: '12px' }} onClick={() => setEditing(true)}>Edit Bio</button>
+                        <button style={{ fontSize: '15px', borderRadius: '10px', backgroundColor: '#82cad2', border: '1px solid gray', padding: '12px' }} onClick={() => setEditing(true)}>Edit Bio</button>
                     :
-                        <button style={{ fontSize: '15px', borderRadius: '10px', backgroundColor: '#82cad2', border: '1px solid #cfcfcf', padding: '12px' }} onClick={() => updateInfo()}>Save</button>
+                        <button style={{ fontSize: '15px', borderRadius: '10px', backgroundColor: '#82cad2', border: '1px solid gray', padding: '12px' }} onClick={() => updateInfo()}>Save</button>
                 ) : (
                     <button 
                         style={{ 
