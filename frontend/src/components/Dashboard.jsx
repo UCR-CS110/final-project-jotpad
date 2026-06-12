@@ -13,7 +13,7 @@ function Dashboard() {
   const [loading, setLoading] = useState(true);
   const [recommendationsLoading, setRecommendationsLoading] = useState(true);
   const [pfpLink, setPfpLink] = useState('https://upload.wikimedia.org/wikipedia/commons/a/ac/Default_pfp.jpg');
-  const [requests, setRequests] = useState(null);
+  const [requests, setRequests] = useState([]);
 
   const navigate = useNavigate();
 
@@ -48,8 +48,13 @@ function Dashboard() {
           const response = await fetch('http://localhost:5000/api/stories/requests');
           if (!response.ok) throw new Error("We couldn't fetch the beta requests.");
                   
-          const data = await response.json();
-          setRequests(data.slice(1, 3));
+          if (profile) {
+            let data = await response.json();
+            let filteredData = data.filter(request => {
+              return request.author != profile._id;
+            });
+            setRequests(filteredData.slice(0, 2));
+          }
         } catch (err) {
           setRecommendationsError(err.message);
         } finally {
@@ -58,7 +63,7 @@ function Dashboard() {
     };
   
   fetchRequests();
-  }, []);
+  }, [profile]);
 
   if (loading) {
     return <div style={{ padding: "20px" }}>Loading dashboard...</div>;
