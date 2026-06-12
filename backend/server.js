@@ -28,8 +28,8 @@ app.use(
     resave: false,
     saveUninitialized: false,
     store: MongoStore.create({
-      mongoUrl: "mongodb+srv://zcao051_db_user:DvE3evnhqP4KIbbk@cluster0.8qwaa93.mongodb.net/?appName=Cluster0"
-      //mongoUrl: process.env.MONGODB_URI,
+      //mongoUrl: "mongodb+srv://zcao051_db_user:DvE3evnhqP4KIbbk@cluster0.8qwaa93.mongodb.net/?appName=Cluster0"
+      mongoUrl: process.env.MONGODB_URI,
     }),
     cookie: { maxAge: 1000 * 60 * 60 * 24, httpOnly: true, secure: false }
   })

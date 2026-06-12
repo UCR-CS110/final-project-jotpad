@@ -165,7 +165,7 @@ export default function Drafts() {
                         />
 
                         <div className="se-row">
-                            <label style={{marginLeft: "0px"}} className="se-select-label">
+                            <label style={{ marginLeft: "0px" }} className="se-select-label">
                                 <select
                                     value={status}
                                     onChange={(e) => setStatus(e.target.value)}
