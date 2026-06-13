@@ -2,9 +2,10 @@
 [![Open in Visual Studio Code](https://classroom.github.com/assets/open-in-vscode-2e0aaae1b6195c2367325f4f02e2d04e9abb55f0b24a779b69b11b9e10269abc.svg)](https://classroom.github.com/online_ide?assignment_repo_id=23873502&assignment_repo_type=AssignmentRepo)
 
 # Jotpad
+## Project Overview
+Our project is a microblogging website called Jotpad. It is a platform that allows aspiring writers to post stories online for others to view. Its unique feature is a currency system that requires you to provide constructive feedback for others' works before you can post your own stories, so users who use this app will use it in order to improve their writing skills. Users can save drafts in the database and once they are happy with their drafts they can submit a beta-request, creating a listing that contains a summary and related genres. Other users will be able to provide feedback and ratings which are saved in the database.
 
 ## Tools Used:
-
 **Frontend**
 - React
 
@@ -22,10 +23,15 @@ npm run dev
 npm run dev
 ```
 
-## Project Description
-Our project is a microblogging website called Jotpad. It is a platform that allows aspiring writers to post stories online for others to view. Its unique feature is a currency system that requires you to provide constructive feedback for others' works before you can post your own stories, so users who use this app will use it in order to improve their writing skills. Users can save drafts in the database and once they are happy with their drafts they can submit a beta-request, creating a listing that contains a summary and related genres. Other users will see this listing and can request to beta the draft. This request will be sent to the author's inbox, where they can choose to accept or reject the request. If they accept it, the beta reader will be given a link to the full draft and will be able to submit any feedback, which will then be returned to the author's inbox. The author can then provide a rating to said feedback, which will be saved and shown in the beta reader's profile. Users can also view and rate public works as well, which is also reflected in the author's profile. There is also an option to follow fellow users. 
 
-In order to actually request beta readers, users will have to spend "credits", which can be earned by submitting feedback to other beta requests. 
+## Feature List
+* Password encryption
+* Admin account dashboard
+* Story viewing and rating
+* Draft editing page
+* Feedback commenting and feedback rating
+* Profile pages with all recorded ratings for reviews and stories
+* Credit system
 
 ## Contributions
 Andrew - I helped to set up the initial database structure and connected the backend routes to the story submission and feedback feature frontend. I also added bcrypt encryption to user account passwords. 
