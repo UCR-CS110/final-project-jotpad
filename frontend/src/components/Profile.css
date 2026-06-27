@@ -1,0 +1,191 @@
+.profile {
+    margin-top: 20px;
+}
+
+#profile-back {
+    position: absolute;
+    top: 120px;
+    left: 220px;
+    font-size: 20px;
+    border-radius: 10px;
+    background-color: #82cad2;
+    border: 1px solid gray;
+    padding: 10px 20px;
+}
+
+#profile-banner {
+    height: 550px;
+    width: 70%;
+    margin-bottom: -6px;
+    align-self: center;
+    margin-left: 15%;
+}
+
+#set-banner {
+    position: absolute;
+    top: 150px;
+    margin-left: 37%;
+}
+
+#profile-pic {
+    border-radius: 50%;
+    width: 200px;
+    height: 200px;
+    z-index: 50;
+    position: absolute;
+    top: 270px;
+    justify-self: center;
+    margin-right: 92%;
+}
+
+#set-pfp {
+    position: absolute;
+    top: 350px;
+    margin-left: 32%;
+    z-index: 100;
+}
+
+.profile-edit-button {
+    justify-self: center;
+    margin-top: 20px;
+    margin-bottom: 15px;
+}
+
+.profile-top {
+    background-color: rgb(234, 235, 220);
+    width: 1000px;
+    justify-self: center;
+    height: 250px;
+    position: absolute;
+    top: 380px;
+    margin-left: 100%;
+    justify-items: center;
+    border: 1px solid gray;
+}
+
+#profile-username {
+    color: black;
+    font-size: 30px;
+    padding-top: 30px;
+}
+
+#profile-description {
+    padding-top: 20px;
+}
+
+#profile-works-created {
+    color: rgb(21, 30, 33);
+}
+
+#profile-my-stories {
+    margin-top: 20px;
+    margin-bottom: 20px;
+    font-family: 'Gill Sans', 'Gill Sans MT', 'Trebuchet MS', sans-serif;
+    font-size: 30px;
+    background-color: rgb(205, 210, 154);
+    width: 500px;
+    border-radius: 50px;
+    align-self: center;
+    text-align: center;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    justify-self: center;
+    border: 1px solid gray;
+}
+
+.profile-story {
+    background-color: rgb(207, 214, 191);
+    width: 1300px;
+    margin-left: 5%;
+    height: 200px;
+    border-radius: 10px;
+    justify-self: center;
+    display: flex;
+    gap: 50px;
+    border: 1px solid gray;
+}
+
+.profile-story-cover {
+    width: 100px;
+    height: 100px;
+    margin-left: 40px;
+    margin-top: 23px;
+    border-radius: 10px;
+}
+
+.profile-story-info {
+    margin-top: 25px;
+    display: flex;
+    flex-direction: column;
+}
+
+.profile-story-title {
+    color: black;
+    text-align: left;
+    margin-top: 0%;
+}
+
+.profile-story-author {
+    margin-top: -2%;
+}
+
+.profile-story-description {
+    color: black;
+    text-align: left;
+    margin-top: -5px;
+}
+
+.profile-stories {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    justify-self: center;
+    padding-right: 5%;
+}
+
+.profile-story-rating {
+    margin-top: -20px;
+    margin-bottom: 20px;
+    font-size: 50px;
+}
+
+.starRating {
+    font-size: 25px;
+
+}
+
+.profile-tabs {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+
+    margin-top: 20px;
+    margin-bottom: 30px;
+}
+
+.profile-tab {
+    font-size: 24px;
+    padding: 15px 40px;
+
+    border: 1px solid gray;
+    border-radius: 15px;
+
+    background-color: rgb(205, 210, 154);
+
+    cursor: pointer;
+
+    transition: 0.2s;
+}
+
+.profile-tab:hover {
+    transform: translateY(-2px);
+}
+
+.profile-tab.active {
+    background-color: rgb(164, 172, 112);
+    font-weight: bold;
+}
+
+.profile-tab-content {
+    width: 100%;
+}

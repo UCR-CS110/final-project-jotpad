@@ -1,0 +1,51 @@
+.inbox {
+    justify-self: center;
+}
+
+#inbox-back {
+    position: absolute;
+    top: 110px;
+    left: 18%;
+    font-size: 20px;
+    border-radius: 10px;
+    background-color: #82cad2;
+    border: 1px solid gray;
+    padding: 10px 20px;
+}
+
+.inbox-message {
+    background-color: rgb(190, 190, 129);
+    width: 1200px;
+    max-height: 250px;
+    border-radius: 2px;
+}
+
+.full-message {
+    background-color: rgb(119, 128, 133);
+    height: 800px;
+    position: absolute;
+    justify-self: center;
+    margin-right: 20%;
+    border-radius: 2px;
+}
+
+.inbox-all {
+    display: flex;
+}
+
+.subject-line-full {
+    display: flex;
+    justify-content: space-between;
+}
+
+.full-message-x {
+    background-color: red;
+    max-width: 20px;
+    max-height: 20px;
+}
+
+.inbox-blurbs {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}

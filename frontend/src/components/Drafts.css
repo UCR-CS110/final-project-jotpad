@@ -1,0 +1,56 @@
+.drafts-page {
+  display: flex;
+  min-height: 100vh;
+  gap: 20px;
+  padding: 20px;
+}
+
+.drafts-sidebar {
+  width: 300px;
+  max-height: calc(100vh - 120px);
+  overflow-y: auto;
+  padding: 20px;
+  border-right: 1px solid #ddd;
+  flex-shrink: 0;
+}
+
+.drafts-sidebar h3 {
+  margin-bottom: 16px;
+  font-size: 25px;
+  margin-top: 0;
+}
+
+.drafts-sidebar h4 {
+  margin-top: 24px;
+  margin-bottom: 12px;
+  font-size: 18px;
+  color: #333;
+}
+
+.draft-tab {
+  display: block;
+  width: 100%;
+  text-align: left;
+  padding: 12px 10px;
+  cursor: pointer;
+  border-radius: 6px;
+  margin-bottom: 8px;
+  font-size: 16px;
+  background: transparent;
+  border: none;
+  transition: background 0.2s ease;
+}
+
+.draft-tab:hover {
+  background: #f0f4ff;
+}
+
+.draft-tab.active {
+  background: #eee;
+  font-weight: bold;
+}
+
+.drafts-editor {
+  flex: 1;
+  overflow-y: auto;
+}
